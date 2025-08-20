@@ -84,10 +84,10 @@ public:
     const char* GetTaskName();
 
     // our function(s)
-    void              SetInterface(CTaskSAInterface* pInterface) { TaskInterface = pInterface; };
+    void                    SetInterface(CTaskSAInterface* pInterface) { TaskInterface = pInterface; };
     CTaskSAInterface*       GetInterface() noexcept { return TaskInterface; }
     const CTaskSAInterface* GetInterface() const noexcept { return TaskInterface; }
-    bool              IsValid() { return GetInterface() != NULL; }
+    bool                    IsValid() { return GetInterface() != NULL; }
 
     void CreateTaskInterface(size_t nSize);
 
