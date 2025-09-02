@@ -17,9 +17,9 @@ class CSettings;
 #include "CMainMenu.h"
 #include "CCore.h"
 
-#define SKINS_PATH                    "skins/*"
-#define CHAT_PRESETS_PATH             "mta/config/chatboxpresets.xml"
-#define CHAT_PRESETS_ROOT             "chatboxpresets"
+#define SKINS_PATH        "skins/*"
+#define CHAT_PRESETS_PATH "mta/config/chatboxpresets.xml"
+#define CHAT_PRESETS_ROOT "chatboxpresets"
 
 // #define SHOWALLSETTINGS
 
@@ -125,16 +125,27 @@ protected:
     const static int SecKeyNum = 3;            // Number of secondary keys
 
     // Keep these protected so we can access them in the event handlers of CClientGame
-    CGUIElement*  m_pWindow;
+    CGUIElement* m_pWindow;
+
     CGUITabPanel* m_pTabs;
-    CGUITab*      m_pTabInterface;
-    CGUITab*      m_pTabBrowser;
-    CGUIButton*   m_pButtonOK;
-    CGUIButton*   m_pButtonCancel;
-    CGUILabel*    m_pLabelNick;
-    CGUIButton*   m_pButtonGenerateNick;
-    CGUIStaticImage*   m_pButtonGenerateNickIcon;
-    CGUIEdit*     m_pEditNick;
+
+    CGUITab* m_pTabMultiplayer;
+    CGUITab* m_pTabVideo;
+    CGUITab* m_pTabAudio;
+    CGUITab* m_pTabBinds;
+    CGUITab* m_pTabControls;
+    CGUITab* m_pTabInterface;
+    CGUITab* m_pTabBrowser;
+    CGUITab* m_pTabAdvanced;
+
+    CGUIButton* m_pButtonOK;
+    CGUIButton* m_pButtonCancel;
+
+    CGUILabel*       m_pLabelNick;
+    CGUIButton*      m_pButtonGenerateNick;
+    CGUIStaticImage* m_pButtonGenerateNickIcon;
+    CGUIEdit*        m_pEditNick;
+
     CGUICheckBox* m_pSavePasswords;
     CGUICheckBox* m_pAutoRefreshBrowser;
 
@@ -413,7 +424,15 @@ protected:
     void ReloadBrowserLists();
 
 private:
+    void CreateMultiplayerTabGUI();
+    void CreateVideoTabGUI();
+    void CreateAudioTabGUI();
+    void CreateBindsTabGUI();
+    void CreateControlsTabGUI();
     void CreateInterfaceTabGUI();
+    void CreateWebBrowserTabGUI();
+    void CreateAdvancedTabGUI();
+
     void UpdateChatColorPreview(eChatColorType eType);
 
     void ProcessKeyBinds();
