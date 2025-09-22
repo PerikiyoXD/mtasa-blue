@@ -9,6 +9,8 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 struct SHttpServerInfo
 {
     bool              bEnabled;

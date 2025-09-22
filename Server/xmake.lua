@@ -16,9 +16,10 @@ target("Core")
     if is_plat("windows") then
         add_includedirs("../vendor/sparsehash/src/windows")
         -- Add common Windows system libraries for file operations
-        add_links("Shell32", "User32", "Kernel32", "Advapi32", "Ole32")
+        add_links("Shell32", "User32", "Kernel32", "Advapi32", "Ole32", "Gdi32")
         if is_arch("x86") then
             add_includedirs("../vendor/detours/4.0.1/src")
+            add_linkdirs("$(builddir)/windows/x86/release")
             add_links("detours", "Imagehlp")
         end
     elseif is_plat("linux") then
@@ -48,6 +49,10 @@ target("Launcher")
     add_files("launcher/*.cpp")
     add_headerfiles("launcher/*.h")
     add_includedirs("../Shared/sdk", "sdk")
+
+    if is_plat("windows") then
+        add_links("User32", "Shell32", "Kernel32", "Advapi32")
+    end
 
 -- Server Deathmatch
 target("Deathmatch")

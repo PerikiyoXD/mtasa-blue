@@ -40,6 +40,15 @@ target("cryptopp")
     -- Exclude test and example files
     remove_files("cryptopp/test*.cpp", "cryptopp/bench*.cpp")
 
+-- tinygettext
+target("tinygettext")
+    set_kind("static")
+    set_languages("cxx")
+
+    add_includedirs("../Shared/sdk")
+    add_files("tinygettext/*.cpp")
+    add_headerfiles("tinygettext/*.hpp")
+
 -- bcrypt (blowfish)
 target("bcrypt")
     set_kind("static")

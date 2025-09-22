@@ -8,6 +8,8 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 class CClientRenderElement : public CClientEntity
 {
     DECLARE_CLASS(CClientRenderElement, CClientEntity)

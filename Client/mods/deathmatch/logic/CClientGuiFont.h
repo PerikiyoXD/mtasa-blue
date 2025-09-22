@@ -4,9 +4,11 @@
  *               (Shared logic for modifications)
  *  LICENSE:     See LICENSE in the top level directory
  *  FILE:        mods/shared_logic/CClientGuiFont.h
- *  PURPOSE:     Custom font bucket
+ *  PURPOSE:     Custom GUI font bucket
  *
  *****************************************************************************/
+
+#pragma once
 
 class CClientGuiFont : public CClientRenderElement
 {

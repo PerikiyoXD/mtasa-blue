@@ -8,6 +8,8 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 class CClientTexture : public CClientMaterial
 {
     DECLARE_CLASS(CClientTexture, CClientMaterial)

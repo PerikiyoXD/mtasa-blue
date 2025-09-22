@@ -8,6 +8,8 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 class CClientDxFont : public CClientRenderElement
 {
     DECLARE_CLASS(CClientDxFont, CClientRenderElement)

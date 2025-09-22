@@ -7,6 +7,8 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 class CClientModelCacheManager
 {
 public:

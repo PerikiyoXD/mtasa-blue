@@ -9,7 +9,12 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 #include <list>
+
+// Forward declaration
+class CGUITabListItem;
 
 typedef std::list<CGUITabListItem*>::const_iterator CGUITabIterator;
 

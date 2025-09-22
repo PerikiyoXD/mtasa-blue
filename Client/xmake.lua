@@ -8,6 +8,7 @@ target("CEFLauncher")
     add_files("ceflauncher/*.cpp")
     add_headerfiles("ceflauncher/*.h")
     add_includedirs("../vendor/cef3/cef")
+    add_deps("CEFLauncher_DLL")
 
     -- Only build on Windows x86 (matching premake)
     if not is_plat("windows") or not is_arch("x86") then
@@ -29,6 +30,7 @@ target("CEFLauncher_DLL")
     add_defines("UNICODE", "_UNICODE", "PSAPI_VERSION=1")
 
     -- CEF libraries and delay loading
+    add_deps("CEF")
     add_links("delayimp", "libcef", "Psapi", "version", "Winmm", "Ws2_32", "DbgHelp")
     add_ldflags("/DELAYLOAD:libcef.dll")
 
@@ -253,6 +255,9 @@ target("Multiplayer_SA")
         set_enabled(false)
     end
 
+    -- Add Shell32 for shell functions
+    add_links("Shell32")
+
 -- Client Launcher
 target("Client_Launcher")
     set_kind("binary")
@@ -331,6 +336,10 @@ target("Loader_Proxy")
     -- Only build on Windows x86
     if not is_plat("windows") or not is_arch("x86") then
         set_enabled(false)
+    end
+
+    if is_plat("windows") then
+        add_links("User32", "Shell32", "Kernel32", "Advapi32")
     end
 
 -- Client SDK

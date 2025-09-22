@@ -8,6 +8,8 @@
  *
  *****************************************************************************/
 
+#pragma once
+
 class CClientShader : public CClientMaterial
 {
     DECLARE_CLASS(CClientShader, CClientMaterial)

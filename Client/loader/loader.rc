@@ -7,7 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+#include "winres.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -27,18 +27,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "\r\n"
     "\0"
@@ -103,7 +103,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Play MTA:SA",IDOK,153,209,67,14
     PUSHBUTTON      "Quit",IDCANCEL,245,209,67,14
-    CTEXT           "Your Grand Theft Auto: San Andreas install directory contains one of these files:",IDC_D3DDLL_TEXT1,31,18,310,17 
+    CTEXT           "Your Grand Theft Auto: San Andreas install directory contains one of these files:",IDC_D3DDLL_TEXT1,31,18,310,17
     EDITTEXT        IDC_EDIT_GRAPHICS_DLL_PATH,31,30,310,50,ES_CENTER | ES_AUTOHSCROLL | ES_AUTOVSCROLL | ES_READONLY | ES_MULTILINE | WS_VSCROLL
     CTEXT           "These files are not required and may interfere with the graphical features in this version of MTA:SA.\n\nIt is recommended that you remove or rename these files.",IDC_D3DDLL_TEXT2,14,91,345,33
     GROUPBOX        "",IDC_STATIC,7,7,359,122
@@ -129,7 +129,7 @@ BEGIN
     CTEXT           "Try each option and see what works:",IDC_OPTIMUS_TEXT2,14,34,207,10
     GROUPBOX        "",IDC_STATIC,22,50,195,119
     CTEXT           "If you get desperate, this might help:",IDC_OPTIMUS_TEXT3,58,173,131,10
-    CONTROL         " Force windowed mode",IDC_CHECK_FORCE_WINDOWED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,75,185,100,10 
+    CONTROL         " Force windowed mode",IDC_CHECK_FORCE_WINDOWED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,75,185,100,10
     CTEXT           "If you have already selected an option that works, this might help:", IDC_OPTIMUS_TEXT4,27,205,180,20
     CONTROL         " Don't show again",IDC_CHECK_REMEMBER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,80,225,100,8
 END
@@ -157,7 +157,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_PROGRESS_DIALOG, DIALOG
     BEGIN
