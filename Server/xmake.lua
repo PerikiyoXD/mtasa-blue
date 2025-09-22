@@ -15,6 +15,8 @@ target("Core")
     -- Platform-specific sparsehash include
     if is_plat("windows") then
         add_includedirs("../vendor/sparsehash/src/windows")
+        -- Add common Windows system libraries for file operations
+        add_links("Shell32", "User32", "Kernel32", "Advapi32", "Ole32")
         if is_arch("x86") then
             add_includedirs("../vendor/detours/4.0.1/src")
             add_links("detours", "Imagehlp")
@@ -107,6 +109,8 @@ target("Dbconmy")
     add_includedirs("../vendor/mysql/include")
 
     if is_plat("windows") then
+        -- Add common Windows system libraries for file operations (same as Core)
+        add_links("Shell32", "User32", "Kernel32", "Advapi32", "Ole32")
         if is_arch("x64") then
             add_linkdirs("../vendor/mysql/lib/x64")
             add_links("libmysql")

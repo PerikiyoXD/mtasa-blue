@@ -42,10 +42,22 @@ target("Client_Webbrowser")
     set_kind("shared")
     set_basename("Client_Webbrowser")
     set_targetdir("$(projectdir)/Bin/mta")
+    set_languages("cxx17")  -- CEF requires C++17
+
+    -- Match premake5 configuration
+    add_defines("PSAPI_VERSION=1")
+    -- TODO: Fix precompiled headers later
+    -- set_pcheader("cefweb/StdInc.h")
+    -- set_pcxxheader("cefweb/StdInc.h")
 
     add_files("cefweb/*.cpp")
     add_headerfiles("cefweb/*.h")
     add_includedirs("../vendor", "../vendor/cef3/cef", "../Shared/sdk", "sdk")
+    add_includedirs("../vendor/sparsehash/src/windows", "../vendor/sparsehash/src")
+
+    -- Link against CEF target and system libraries
+    add_deps("CEF")
+    add_links("Psapi", "version", "Winmm", "Ws2_32", "DbgHelp", "User32", "Shell32")
 
 -- Client Core
 target("Client_Core")
@@ -54,8 +66,8 @@ target("Client_Core")
     set_targetdir("$(projectdir)/Bin/mta")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("core/StdInc.h")
+    set_pcxxheader("core/StdInc.h")
 
     add_includedirs(
         "../Shared/sdk",
@@ -76,7 +88,7 @@ target("Client_Core")
     add_files("core/*.cpp", "core/*.rc")
     add_headerfiles("core/*.h", "core/*.hpp")
     -- Include icon resource (matching premake)
-    add_files("launch/resource/mtaicon.ico")
+    -- add_files("launch/resource/mtaicon.ico")
 
     add_deps("detours")
 
@@ -109,8 +121,8 @@ target("Client_Deathmatch")
     set_targetdir("$(projectdir)/Bin/mods/deathmatch")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("mods/deathmatch/StdInc.h")
+    set_pcxxheader("mods/deathmatch/StdInc.h")
     add_files("mods/deathmatch/StdInc.cpp") -- PCH source
 
     add_includedirs(
@@ -168,8 +180,8 @@ target("GUI")
     set_targetdir("$(projectdir)/Bin/mta")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("gui/StdInc.h")
+    set_pcxxheader("gui/StdInc.h")
     add_files("gui/StdInc.cpp")
 
     add_includedirs(
@@ -200,8 +212,8 @@ target("Game_SA")
     set_targetdir("$(projectdir)/Bin/mta")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("game_sa/StdInc.h")
+    set_pcxxheader("game_sa/StdInc.h")
     add_files("game_sa/StdInc.cpp")
 
     add_includedirs(
@@ -224,8 +236,8 @@ target("Multiplayer_SA")
     set_targetdir("$(projectdir)/Bin/mta")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("multiplayer_sa/StdInc.h")
+    set_pcxxheader("multiplayer_sa/StdInc.h")
     add_files("multiplayer_sa/StdInc.cpp")
 
     add_includedirs(
@@ -248,8 +260,8 @@ target("Client_Launcher")
     set_targetdir("$(projectdir)/Bin")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("launch/StdInc.h")
+    set_pcxxheader("launch/StdInc.h")
     add_files("launch/StdInc.cpp")
 
     add_includedirs(
@@ -277,8 +289,8 @@ target("Loader")
     set_targetdir("$(projectdir)/Bin/mta")
 
     -- Precompiled headers (matching premake)
-    set_pcheader("StdInc.h")
-    set_pcxxheader("StdInc.h")
+    set_pcheader("loader/StdInc.h")
+    set_pcxxheader("loader/StdInc.h")
     add_files("loader/StdInc.cpp")
 
     add_includedirs(
@@ -288,7 +300,7 @@ target("Loader")
         "../vendor/detours/4.0.1/src"
     )
 
-    add_files("loader/*.cpp", "loader/*.c")
+    add_files("loader/*.cpp", "loader/*.rc")
     add_headerfiles("loader/*.h")
 
     if is_plat("windows") then

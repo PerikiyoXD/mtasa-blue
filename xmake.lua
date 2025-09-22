@@ -6,6 +6,23 @@ set_version("1.6.0")
 -- Add custom modes matching premake
 set_allowedmodes("debug", "release", "nightly")
 
+-- Set up platforms matching premake5
+-- On Windows: x86, x64, arm64
+-- On Linux: x86, x64, arm, arm64
+-- On macOS: arm64 only
+if is_plat("windows") then
+    set_allowedplats("windows")
+    set_allowedarchs("windows", "x86", "x64", "arm64")
+    -- Default to x86 for Windows (matching premake5)
+    set_defaultarchs("windows", "x86")
+elseif is_plat("linux") then
+    set_allowedplats("linux")
+    set_allowedarchs("linux", "x86", "x64", "arm", "arm64")
+elseif is_plat("macosx") then
+    set_allowedplats("macosx")
+    set_allowedarchs("macosx", "arm64")
+end
+
 -- Global settings (matching premake C++23)
 set_languages("cxx23")
 add_rules("mode.debug", "mode.release")
@@ -42,7 +59,12 @@ if is_plat("windows") then
     local dxdir = os.getenv("DXSDK_DIR") or "C:\\Program Files (x86)\\Microsoft DirectX SDK (June 2010)"
     if os.isdir(dxdir) then
         add_includedirs(path.join(dxdir, "Include"), {public = true})
-        add_linkdirs(path.join(dxdir, "Lib/x86"), {public = true})
+        -- Architecture-specific library directories
+        if is_arch("x86") then
+            add_linkdirs(path.join(dxdir, "Lib/x86"), {public = true})
+        elseif is_arch("x64") then
+            add_linkdirs(path.join(dxdir, "Lib/x64"), {public = true})
+        end
         print("Using DirectX SDK at: " .. dxdir)
     else
         print("Warning: DirectX SDK not found at " .. dxdir)

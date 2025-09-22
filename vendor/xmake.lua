@@ -48,6 +48,47 @@ target("bcrypt")
     add_files("bcrypt/*.c")
     add_headerfiles("bcrypt/*.h")
 
+-- blowfish_bcrypt (alias for bcrypt)
+target("blowfish_bcrypt")
+    set_kind("static")
+    set_languages("c")
+
+    add_files("bcrypt/*.c")
+    add_headerfiles("bcrypt/*.h")
+
+-- discord-rpc
+target("discord-rpc")
+    set_kind("static")
+    set_languages("cxx")
+
+    add_includedirs("discord-rpc/discord/include", "discord-rpc/discord/thirdparty/rapidjson/include")
+    add_defines("DISCORD_DISABLE_IO_THREAD")
+    add_files(
+        "discord-rpc/discord/src/discord_rpc.cpp",
+        "discord-rpc/discord/src/rpc_connection.cpp",
+        "discord-rpc/discord/src/serialization.cpp",
+        "discord-rpc/discord/src/connection_win.cpp",
+        "discord-rpc/discord/src/discord_register_win.cpp"
+    )
+    add_headerfiles("discord-rpc/discord/include/*.h")
+
+    -- Only build for Windows x86 (from premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
+    end
+
+-- pcre
+target("pcre")
+    set_kind("shared")
+    set_basename("pcre3")
+    set_languages("cxx")
+    set_targetdir("$(projectdir)/Bin/server/mods/deathmatch")
+
+    add_defines("HAVE_CONFIG_H")
+    add_includedirs("pcre")
+    add_files("pcre/*.c", "pcre/*.cc")
+    add_headerfiles("pcre/*.h")
+
 -- json-c
 target("json-c")
     set_kind("static")
@@ -99,25 +140,56 @@ target("CEGUI")
 
     add_files("cegui-0.4.0-custom/src/*.cpp")
     add_headerfiles("cegui-0.4.0-custom/include/*.h")
-    add_includedirs("cegui-0.4.0-custom/include", "freetype/include")
+    add_includedirs("cegui-0.4.0-custom/include", "cegui-0.4.0-custom/dependencies/include", "freetype/include", {public = true})
+
+    -- Exclude the renderer directory (built separately)
+    remove_files("cegui-0.4.0-custom/src/renderers/**")
+    -- Exclude these files (from premake)
+    remove_files("cegui-0.4.0-custom/src/pcre/ucptypetable.c", "cegui-0.4.0-custom/src/pcre/ucptable.c", "cegui-0.4.0-custom/src/pcre/ucp.c")
+
+    add_defines("CEGUIBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
+    add_deps("freetype")
+
+    -- Windows x86 only (from premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
+    end
 
 -- DirectX9GUIRenderer
 target("DirectX9GUIRenderer")
     set_kind("static")
     set_languages("cxx")
 
-    add_files("cegui-0.4.0-custom/src/renderers/directx9GUIRenderer/*.cpp")
-    add_headerfiles("cegui-0.4.0-custom/include/renderers/DirectX9GUIRenderer/*.h")
+    add_defines("_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
     add_includedirs("cegui-0.4.0-custom/include")
+    add_files(
+        "cegui-0.4.0-custom/src/renderers/directx9GUIRenderer/d3d9renderer.cpp",
+        "cegui-0.4.0-custom/src/renderers/directx9GUIRenderer/d3d9texture.cpp"
+    )
+    add_headerfiles(
+        "cegui-0.4.0-custom/include/renderers/d3d9texture.h",
+        "cegui-0.4.0-custom/include/renderers/d3d9renderer.h"
+    )
+
+    -- Windows x86 only (from premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
+    end
 
 -- Falagard
 target("Falagard")
     set_kind("static")
     set_languages("cxx")
 
+    add_defines("FALAGARDBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
+    add_includedirs("cegui-0.4.0-custom/WidgetSets/Falagard/include", "cegui-0.4.0-custom/include")
     add_files("cegui-0.4.0-custom/WidgetSets/Falagard/src/*.cpp")
     add_headerfiles("cegui-0.4.0-custom/WidgetSets/Falagard/include/*.h")
-    add_includedirs("cegui-0.4.0-custom/include", "cegui-0.4.0-custom/WidgetSets/Falagard/include")
+
+    -- Windows x86 only (from premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
+    end
 
 -- libpng
 target("libpng")
@@ -373,6 +445,24 @@ target("pthread")
         "pthreads/include/semaphore.h"
     )
     add_includedirs("pthreads/include")
+
+-- CEF (Chromium Embedded Framework)
+target("CEF")
+    set_kind("static")
+    set_languages("cxx17")  -- CEF requires C++17 for std::in_place_t and other features
+
+    -- Match premake5 configuration
+    add_defines("__STDC_CONSTANT_MACROS", "__STDC_FORMAT_MACROS", "_FILE_OFFSET_BITS=64")
+    add_defines("_WINDOWS", "UNICODE", "_UNICODE", "WINVER=0x0602", "_WIN32_WINNT=0x602", "NOMINMAX", "WIN32_LEAN_AND_MEAN", "_HAS_EXCEPTIONS=0")
+    add_defines("PSAPI_VERSION=1", "WRAPPING_CEF_SHARED")
+
+    add_includedirs("cef3/cef", {public = true})
+    add_files("cef3/cef/libcef_dll/**.cc")
+    add_headerfiles("cef3/**.h")
+
+    -- Add the CEF library directory and dependencies
+    add_linkdirs("cef3/cef/Release", {public = true})
+    add_links("libcef", "Psapi", "version", "Winmm", "Ws2_32", "DbgHelp", {public = true})
 
 -- Lua_Client (separate lua build for client)
 target("Lua_Client")
