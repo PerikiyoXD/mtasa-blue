@@ -12,3 +12,8 @@ target("XML")
 
     add_files("XML/*.cpp")
     add_headerfiles("XML/*.h")
+
+    -- Add Shell32 for SHFileOperationW
+    if is_plat("windows") then
+        add_links("Shell32")
+    end

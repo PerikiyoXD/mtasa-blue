@@ -482,3 +482,88 @@ target("Lua_Client")
     add_headerfiles("lua/src/*.h")
     -- Remove lua interpreter main
     remove_files("lua/src/lua.c", "lua/src/luac.c")
+
+-- unrar
+target("unrar")
+    set_kind("static")
+    set_languages("cxx")
+
+    add_defines("RARDLL")
+
+    -- Specific files from premake5.lua
+    add_files(
+        "unrar/archive.cpp",
+        "unrar/arcread.cpp",
+        "unrar/cmddata.cpp",
+        "unrar/consio.cpp",
+        "unrar/crc.cpp",
+        "unrar/crypt.cpp",
+        "unrar/dll.cpp",
+        "unrar/encname.cpp",
+        "unrar/errhnd.cpp",
+        "unrar/extinfo.cpp",
+        "unrar/extract.cpp",
+        "unrar/filcreat.cpp",
+        "unrar/file.cpp",
+        "unrar/filefn.cpp",
+        "unrar/filestr.cpp",
+        "unrar/find.cpp",
+        "unrar/getbits.cpp",
+        "unrar/global.cpp",
+        "unrar/list.cpp",
+        "unrar/match.cpp",
+        "unrar/options.cpp",
+        "unrar/pathfn.cpp",
+        "unrar/rar.cpp",
+        "unrar/rarpch.cpp",
+        "unrar/rarvm.cpp",
+        "unrar/rawread.cpp",
+        "unrar/rdwrfn.cpp",
+        "unrar/recvol.cpp",
+        "unrar/rijndael.cpp",
+        "unrar/rs.cpp",
+        "unrar/scantree.cpp",
+        "unrar/secpassword.cpp",
+        "unrar/sha1.cpp",
+        "unrar/smallfn.cpp",
+        "unrar/strfn.cpp",
+        "unrar/strlist.cpp",
+        "unrar/system.cpp",
+        "unrar/timefn.cpp",
+        "unrar/unicode.cpp",
+        "unrar/unpack.cpp",
+        "unrar/volume.cpp",
+        "unrar/blake2s.cpp",
+        "unrar/hash.cpp",
+        "unrar/headers.cpp",
+        "unrar/qopen.cpp",
+        "unrar/rs16.cpp",
+        "unrar/sha256.cpp",
+        "unrar/threadpool.cpp",
+        "unrar/ui.cpp"
+    )
+
+    add_headerfiles("unrar/*.hpp")
+
+    -- Windows-specific files and settings
+    if is_plat("windows") then
+        add_files("unrar/isnt.cpp")
+        -- Disable deprecation warnings (from premake)
+        add_cxxflags("/wd4996", {force = true})
+    end
+
+-- portaudio (Windows x86 only, matching premake)
+target("portaudio")
+    set_kind("static")
+    set_languages("cxx")
+
+    add_files("portaudio/*.c")
+    add_headerfiles("portaudio/*.h")
+
+    -- Only build on Windows x86 (matching premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
+    else
+        -- Disable deprecation warnings on Windows
+        add_cxxflags("/wd4996", {force = true})
+    end

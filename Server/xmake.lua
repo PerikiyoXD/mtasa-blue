@@ -1,5 +1,10 @@
 -- Server targets
 
+-- Configure MTA_DEBUG for debug builds (matching premake behavior)
+if is_mode("debug") then
+    add_defines("MTA_DEBUG")
+end
+
 -- Server Core
 target("Core")
     set_kind("shared")

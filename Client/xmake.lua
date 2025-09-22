@@ -31,7 +31,7 @@ target("CEFLauncher_DLL")
 
     -- CEF libraries and delay loading
     add_deps("CEF")
-    add_links("delayimp", "libcef", "Psapi", "version", "Winmm", "Ws2_32", "DbgHelp")
+    add_links("delayimp", "libcef", "Psapi", "version", "Winmm", "Ws2_32", "DbgHelp", "User32")
     add_ldflags("/DELAYLOAD:libcef.dll")
 
     -- Only build on Windows x86 (matching premake)
@@ -87,7 +87,8 @@ target("Client_Core")
         add_cxflags("/Zm130")  -- Matching premake buildoptions
     end
 
-    add_files("core/*.cpp", "core/*.rc")
+    add_files("core/*.cpp")
+    add_files("core/*.rc")  -- Temporarily disabled RC files
     add_headerfiles("core/*.h", "core/*.hpp")
     -- Include icon resource (matching premake)
     -- add_files("launch/resource/mtaicon.ico")
@@ -152,22 +153,28 @@ target("Client_Deathmatch")
 
     add_files(
         "mods/deathmatch/*.cpp",
+        "mods/deathmatch/logic/**.cpp",  -- Include all files in logic subdirectories
         "../Shared/mods/deathmatch/logic/*.cpp",
         "../Shared/animation/CEasingCurve.cpp",
         "../Shared/animation/CPositionRotationAnimation.cpp",
         "../vendor/bochs/bochs_internal/bochs_crc32.cpp"
     )
-    add_headerfiles("mods/deathmatch/*.h", "../Shared/mods/deathmatch/logic/*.h")
+    add_headerfiles("mods/deathmatch/*.h", "mods/deathmatch/logic/**.h", "../Shared/mods/deathmatch/logic/*.h")
 
     add_defines("LUNASVG_BUILD", "LUA_USE_APICHECK", "SDK_WITH_BCRYPT")
+
+    -- Remove NDEBUG define for Lua API checks to work (matching premake behavior)
+    add_undefines("NDEBUG")
 
     if is_plat("windows") then
         -- Bass library links with full path (matching premake)
         add_linkdirs("../vendor/bass/lib")
         add_links(
-            "ws2_32", "portaudio", "bass", "bass_fx", "bassmix", "tags"
+            "ws2_32", "bass", "bass_fx", "bassmix", "tags"
         )
-        add_deps("Lua_Client", "pcre", "json-c", "zlib", "cryptopp", "libspeex", "blowfish_bcrypt", "lunasvg")
+        -- Add Windows libraries for clipboard, shell, COM functions
+        add_links("User32", "Shell32", "Ole32")
+        add_deps("Lua_Client", "pcre", "json-c", "zlib", "cryptopp", "libspeex", "blowfish_bcrypt", "lunasvg", "portaudio")
     end
 
     -- Only build on Windows x86 (matching premake filters)
@@ -231,6 +238,9 @@ target("Game_SA")
         set_enabled(false)
     end
 
+    -- Add Windows libraries for clipboard, MessageBox, and shell functions
+    add_links("User32", "Shell32")
+
 -- Multiplayer SA
 target("Multiplayer_SA")
     set_kind("shared")
@@ -279,7 +289,9 @@ target("Client_Launcher")
 
     -- Windows app entry point
     if is_plat("windows") then
-        add_ldflags("/SUBSYSTEM:WINDOWS", "/ENTRY:WinMainCRTStartup")
+        add_ldflags("/SUBSYSTEM:WINDOWS", "/ENTRY:WinMainCRTStartup", {force = true})
+        -- Add Windows libraries for clipboard, shell, and COM functions
+        add_links("User32", "Shell32", "Ole32")
     end
 
     -- Only build on Windows x86
@@ -309,10 +321,10 @@ target("Loader")
     add_headerfiles("loader/*.h")
 
     if is_plat("windows") then
-        add_links("unrar", "d3d9", "Imagehlp")
+        add_links("d3d9", "Imagehlp")
         add_linkdirs("../vendor/nvapi/x86")
         add_links("nvapi")
-        add_deps("detours", "cryptopp")
+        add_deps("detours", "cryptopp", "unrar")
 
         -- Disable specific warnings (matching premake)
         add_cxflags("/wd4996")

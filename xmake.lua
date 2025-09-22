@@ -28,6 +28,13 @@ set_languages("cxx23")
 add_rules("mode.debug", "mode.release")
 set_symbols("on")
 
+-- Fix resource compiler hanging issue
+if is_plat("windows") then
+    set_toolchains("msvc")
+    -- Explicitly configure resource compiler
+    add_rules("utils.bin2c", {extensions = {".rc"}})
+end
+
 -- Global include directories
 if is_plat("windows") then
     -- On Windows, Windows-specific config must come first to override the main config
