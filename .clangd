@@ -1,0 +1,20 @@
+CompileFlags:
+  Add: [
+    '--query-driver=C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe',
+
+    '-std:c++latest',
+    '-D_HAS_CXX17=1',
+    '-D_HAS_CXX20=1',
+    '-D_HAS_CXX23=1',
+    '-D__cplusplus=202302L',
+    '-D_SILENCE_CLANG_CONCEPTS_WARNING=1',  # Silences some concept issues in MSVC STL
+    '-fms-compatibility',
+    '-fms-extensions',
+    '-fdelayed-template-parsing',
+    '-fsyntax-only',
+    '-Wno-unknown-warning-option',
+    '-Wno-c++20-extensions',
+    '-Wno-deprecated-declarations',
+    '-Wno-microsoft-enum-value',
+    '-Wno-microsoft-include'
+  ]
