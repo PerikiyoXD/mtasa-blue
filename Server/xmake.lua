@@ -50,11 +50,49 @@ target("Launcher")
 -- Server Deathmatch
 target("Deathmatch")
     set_kind("shared")
+    set_basename("deathmatch")
     set_targetdir("$(projectdir)/Bin/server/mods/deathmatch")
 
+    -- Precompiled header
+    set_pcheader("StdInc.h")
+    add_files("mods/deathmatch/StdInc.cpp")
+
     add_files("mods/deathmatch/logic/*.cpp")
+    add_files("../Shared/mods/deathmatch/logic/*.cpp")
     add_headerfiles("mods/deathmatch/logic/*.h")
-    add_includedirs("../Shared/sdk", "sdk", "../vendor")
+    add_headerfiles("mods/deathmatch/*.h")
+    add_headerfiles("../Shared/mods/deathmatch/logic/*.h")
+
+    add_includedirs(
+        "../Shared/sdk",
+        "sdk",
+        "../vendor/bochs",
+        "../vendor/pme",
+        "../vendor/zip",
+        "../vendor/glob/include",
+        "../vendor/zlib",
+        "../vendor/pcre",
+        "../vendor/json-c",
+        "../vendor/lua/src",
+        "../vendor/pthreads/include",
+        "../Shared/gta",
+        "../Shared/mods/deathmatch/logic",
+        "../Shared/animation",
+        "../Shared/publicsdk/include",
+        "mods/deathmatch/logic",
+        "mods/deathmatch/utils",
+        "mods/deathmatch"
+    )
+
+    -- Platform-specific sparsehash include
+    if is_plat("windows") then
+        add_includedirs("../vendor/sparsehash/src/windows")
+    else
+        add_includedirs("../vendor/sparsehash/src")
+    end
+
+    add_defines("SDK_WITH_BCRYPT")
+    add_deps("blowfish_bcrypt", "cryptopp", "ehs", "glob", "json-c", "pcre", "pme", "sqlite", "zip", "zlib")
 
 -- DB Connection MySQL
 target("Dbconmy")
@@ -64,3 +102,25 @@ target("Dbconmy")
     add_files("dbconmy/*.cpp")
     add_headerfiles("dbconmy/*.h")
     add_includedirs("../Shared/sdk", "sdk", "../vendor")
+
+    -- MySQL includes and links
+    add_includedirs("../vendor/mysql/include")
+
+    if is_plat("windows") then
+        if is_arch("x64") then
+            add_linkdirs("../vendor/mysql/lib/x64")
+            add_links("libmysql")
+        elseif is_arch("x86") then
+            add_linkdirs("../vendor/mysql/lib/x86")
+            add_links("libmysql")
+        elseif is_arch("arm64") then
+            add_linkdirs("../vendor/mysql/lib/arm64")
+            add_links("libmysql")
+        end
+    elseif is_plat("linux") then
+        add_includedirs("/usr/include/mysql")
+        add_links("z", "dl", "m", "mysqlclient", "zstd", "ssl", "crypto", "resolv")
+    elseif is_plat("macosx") then
+        -- macOS MySQL paths would be dynamic based on installation
+        add_links("mysqlclient")
+    end

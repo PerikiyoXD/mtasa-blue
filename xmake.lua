@@ -37,6 +37,17 @@ if is_plat("windows") then
     add_cxflags("/MP")
     -- Character set MBCS (matching premake)
     add_cxflags("/D_MBCS")
+
+    -- DirectX SDK support
+    local dxdir = os.getenv("DXSDK_DIR") or "C:\\Program Files (x86)\\Microsoft DirectX SDK (June 2010)"
+    if os.isdir(dxdir) then
+        add_includedirs(path.join(dxdir, "Include"), {public = true})
+        add_linkdirs(path.join(dxdir, "Lib/x86"), {public = true})
+        print("Using DirectX SDK at: " .. dxdir)
+    else
+        print("Warning: DirectX SDK not found at " .. dxdir)
+        print("Please set DXSDK_DIR environment variable or install DirectX SDK June 2010")
+    end
 elseif is_plat("linux", "macosx") then
     add_cxflags("-fvisibility=hidden")
 end
