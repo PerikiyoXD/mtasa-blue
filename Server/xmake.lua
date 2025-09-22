@@ -9,17 +9,18 @@ target("Core")
     add_includedirs(
         "../Shared/sdk",
         "sdk",
-        "../vendor/google-breakpad/src",
-        "../vendor/sparsehash/current/src/"
+        "../vendor/google-breakpad/src"
     )
 
+    -- Platform-specific sparsehash include
     if is_plat("windows") then
-        add_includedirs("../vendor/sparsehash/current/src/windows")
+        add_includedirs("../vendor/sparsehash/src/windows")
         if is_arch("x86") then
             add_includedirs("../vendor/detours/4.0.1/src")
             add_links("detours", "Imagehlp")
         end
     elseif is_plat("linux") then
+        add_includedirs("../vendor/sparsehash/src")
         add_links("breakpad", "rt")
         add_cxflags("-pthread")
         add_ldflags("-pthread", "-l:libncursesw.so.6")
@@ -62,4 +63,4 @@ target("Dbconmy")
 
     add_files("dbconmy/*.cpp")
     add_headerfiles("dbconmy/*.h")
-    add_includedirs("../vendor")
+    add_includedirs("../Shared/sdk", "sdk", "../vendor")
