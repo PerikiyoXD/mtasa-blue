@@ -203,9 +203,19 @@ target("libspeex")
     set_kind("static")
     set_languages("c")
 
+    -- Match premake5 configuration
+    add_defines("HAVE_CONFIG_H")
+    add_includedirs("libspeex", "libspeex/libspeex", {public = true})
     add_files("libspeex/libspeex/*.c")
-    add_headerfiles("libspeex/include/speex/*.h")
-    add_includedirs("libspeex/include")
+    add_files("libspeex/libspeexdsp/*.c")
+    -- Exclude files as per premake5
+    remove_files("libspeex/libspeexdsp/kiss_fft.c", "libspeex/libspeexdsp/kiss_fftr.c", "libspeex/libspeexdsp/smallft.c", "libspeex/libspeexdsp/fftwrap.c")
+    add_headerfiles("libspeex/speex/*.h")
+    add_headerfiles("libspeex/libspeex/*.h")
+    add_headerfiles("libspeex/libspeexdsp/*.h")
+    if is_plat("windows") then
+        set_warnings("none")  -- Disable warnings as per premake5
+    end
 
 -- tinygettext
 target("tinygettext")
@@ -227,11 +237,20 @@ target("blowfish_bcrypt")
 -- lunasvg
 target("lunasvg")
     set_kind("static")
-    set_languages("cxx")
+    set_languages("cxx17")  -- Requires C++17 for std::string_view, std::optional, std::clamp
 
-    add_files("lunasvg/source/*.cpp")
-    add_headerfiles("lunasvg/include/**.h")
-    add_includedirs("lunasvg/include")
+    -- Match premake5 configuration
+    add_defines("PLUTOVG_BUILD", "LUNASVG_BUILD", "_CRT_SECURE_NO_WARNINGS")
+    set_fpmodels("fast")
+    set_runtimes("MD")
+    add_includedirs("lunasvg/3rdparty/plutovg", "lunasvg/source", "lunasvg/include", {public = true})
+    -- Include all files recursively like premake5 does
+    add_files("lunasvg/**.cpp")
+    add_files("lunasvg/**.c")
+    add_headerfiles("lunasvg/**.h")
+    if is_plat("windows") then
+        set_warnings("none")  -- Disable warnings as per premake5
+    end
 
 -- freetype
 target("freetype")
