@@ -1,69 +1,40 @@
--- Vendor libraries
+-- =============================================================================
+-- External Package Requirements
+-- =============================================================================
 
--- zlib
-target("zlib")
-    set_kind("static")
-    set_languages("c")
+add_requires("cryptopp", {configs = {shared = false}})
+add_requires("zlib-ng", {alias = "zlib", configs = {zlib_compat = true, shared = false}})
+add_requires("libpng", {configs = {shared = false}})
+add_requires("libjpeg v9f", {configs = {shared = false}})
+add_requires("minizip-ng", {alias = "zip", configs = {shared = false}})
 
-    add_files("zlib/*.c")
-    add_headerfiles("zlib/*.h")
-    remove_files("zlib/example.c")
+-- Windows-only requirements
+if is_plat("windows") then
+    add_requires("pthreads4w", {alias = "pthreads", configs = {shared = true}})
+    add_requires("microsoft-detours", {alias = "detours", configs = {shared = false}})
+end
 
-    -- Stop "bit length overflow" warning (from premake)
-    add_defines("verbose=-1")
+-- =============================================================================
+-- Includes for separate xmake files
+-- =============================================================================
 
-    if is_plat("windows") then
-        -- Windows-specific configuration
-        add_defines("_WIN32", "_WINDOWS")
-        add_cflags("/D_CRT_SECURE_NO_WARNINGS")
-    elseif is_plat("macosx") then
-        add_defines("HAVE_UNISTD_H")
-    end
+includes("sparsehash")
+includes("bcrypt")
+includes("tinygettext")
+includes("tinyxml")
+includes("pcre")
 
--- tinyxml
-target("tinyxml")
-    set_kind("static")
-    set_languages("cxx")
+-- Windows-only includes
+if is_plat("windows") then
+    includes("ksignals")
+    includes("cef3")
+end
 
-    add_includedirs("../Shared/sdk")
-    add_defines("TIXML_USE_STL")
-    add_files("tinyxml/*.cpp")
-    add_headerfiles("tinyxml/*.h")
+-- =============================================================================
+-- Vendor Library Targets (without separate xmake files)
+-- =============================================================================
 
--- cryptopp
-target("cryptopp")
-    set_kind("static")
-    set_languages("cxx")
 
-    add_files("cryptopp/*.cpp")
-    add_headerfiles("cryptopp/*.h")
-    -- Exclude test and example files
-    remove_files("cryptopp/test*.cpp", "cryptopp/bench*.cpp")
-
--- tinygettext
-target("tinygettext")
-    set_kind("static")
-    set_languages("cxx")
-
-    add_includedirs("../Shared/sdk")
-    add_files("tinygettext/*.cpp")
-    add_headerfiles("tinygettext/*.hpp")
-
--- bcrypt (blowfish)
-target("bcrypt")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("bcrypt/*.c")
-    add_headerfiles("bcrypt/*.h")
-
--- blowfish_bcrypt (alias for bcrypt)
-target("blowfish_bcrypt")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("bcrypt/*.c")
-    add_headerfiles("bcrypt/*.h")
 
 -- discord-rpc
 target("discord-rpc")
@@ -147,17 +118,15 @@ target("CEGUI")
     set_kind("static")
     set_languages("cxx")
 
-    add_files("cegui-0.4.0-custom/src/*.cpp")
-    add_headerfiles("cegui-0.4.0-custom/include/*.h")
+    add_files("cegui-0.4.0-custom/src/**.cpp")
+    add_headerfiles("cegui-0.4.0-custom/include/**.h")
     add_includedirs("cegui-0.4.0-custom/include", "cegui-0.4.0-custom/dependencies/include", "freetype/include", {public = true})
 
     -- Exclude the renderer directory (built separately)
     remove_files("cegui-0.4.0-custom/src/renderers/**")
-    -- Exclude these files (from premake)
-    remove_files("cegui-0.4.0-custom/src/pcre/ucptypetable.c", "cegui-0.4.0-custom/src/pcre/ucptable.c", "cegui-0.4.0-custom/src/pcre/ucp.c")
 
     add_defines("CEGUIBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
-    add_deps("freetype")
+    add_deps("freetype", "pcre-static")
 
     -- Windows x86 only (from premake)
     if not is_plat("windows") or not is_arch("x86") then
@@ -179,6 +148,7 @@ target("DirectX9GUIRenderer")
         "cegui-0.4.0-custom/include/renderers/d3d9texture.h",
         "cegui-0.4.0-custom/include/renderers/d3d9renderer.h"
     )
+    add_deps("CEGUI")
 
     -- Windows x86 only (from premake)
     if not is_plat("windows") or not is_arch("x86") then
@@ -194,81 +164,16 @@ target("Falagard")
     add_includedirs("cegui-0.4.0-custom/WidgetSets/Falagard/include", "cegui-0.4.0-custom/include")
     add_files("cegui-0.4.0-custom/WidgetSets/Falagard/src/*.cpp")
     add_headerfiles("cegui-0.4.0-custom/WidgetSets/Falagard/include/*.h")
+    add_deps("CEGUI")
 
     -- Windows x86 only (from premake)
     if not is_plat("windows") or not is_arch("x86") then
         set_enabled(false)
     end
 
--- libpng
-target("libpng")
-    set_kind("static")
-    set_languages("c")
 
-    -- Match premake5 file selection and config
-    add_files("libpng/*.c")
-    remove_files("libpng/example.c", "libpng/pngtest.c")  -- Exclude test files
-    add_headerfiles("libpng/*.h")
-    add_includedirs("zlib", "libpng", {public = true})
-    add_defines("_CRT_SECURE_NO_WARNINGS", "WIN32_LEAN_AND_MEAN", "PNG_NO_MMX_CODE", "PNG_SETJMP_NOT_SUPPORTED")
-    add_deps("zlib")
-
--- jpeg
-target("jpeg")
-    set_kind("static")
-    set_languages("c")
-
-    -- Match premake5 file selection - exclude DOS/MAC/Windows specific memory managers
-    add_files("jpeg-9f/jaricom.c")
-    add_files("jpeg-9f/jcapimin.c")
-    add_files("jpeg-9f/jcapistd.c")
-    add_files("jpeg-9f/jcarith.c")
-    add_files("jpeg-9f/jccoefct.c")
-    add_files("jpeg-9f/jccolor.c")
-    add_files("jpeg-9f/jcdctmgr.c")
-    add_files("jpeg-9f/jchuff.c")
-    add_files("jpeg-9f/jcinit.c")
-    add_files("jpeg-9f/jcmainct.c")
-    add_files("jpeg-9f/jcmarker.c")
-    add_files("jpeg-9f/jcmaster.c")
-    add_files("jpeg-9f/jcomapi.c")
-    add_files("jpeg-9f/jcparam.c")
-    add_files("jpeg-9f/jcprepct.c")
-    add_files("jpeg-9f/jcsample.c")
-    add_files("jpeg-9f/jctrans.c")
-    add_files("jpeg-9f/jdapimin.c")
-    add_files("jpeg-9f/jdapistd.c")
-    add_files("jpeg-9f/jdarith.c")
-    add_files("jpeg-9f/jdatadst.c")
-    add_files("jpeg-9f/jdatasrc.c")
-    add_files("jpeg-9f/jdcoefct.c")
-    add_files("jpeg-9f/jdcolor.c")
-    add_files("jpeg-9f/jddctmgr.c")
-    add_files("jpeg-9f/jdhuff.c")
-    add_files("jpeg-9f/jdinput.c")
-    add_files("jpeg-9f/jdmainct.c")
-    add_files("jpeg-9f/jdmarker.c")
-    add_files("jpeg-9f/jdmaster.c")
-    add_files("jpeg-9f/jdmerge.c")
-    add_files("jpeg-9f/jdpostct.c")
-    add_files("jpeg-9f/jdsample.c")
-    add_files("jpeg-9f/jdtrans.c")
-    add_files("jpeg-9f/jerror.c")
-    add_files("jpeg-9f/jfdctflt.c")
-    add_files("jpeg-9f/jfdctfst.c")
-    add_files("jpeg-9f/jfdctint.c")
-    add_files("jpeg-9f/jidctflt.c")
-    add_files("jpeg-9f/jidctfst.c")
-    add_files("jpeg-9f/jidctint.c")
-    add_files("jpeg-9f/jmemmgr.c")
-    add_files("jpeg-9f/jmemnobs.c")  -- Use "no backing store" version
-    add_files("jpeg-9f/jquant1.c")
-    add_files("jpeg-9f/jquant2.c")
-    add_files("jpeg-9f/jutils.c")
-    add_headerfiles("jpeg-9f/*.h")
-
--- pcre
-target("pcre")
+-- pcre-static (renamed to avoid conflict with pcre shared library)
+target("pcre-static")
     set_kind("static")
     set_languages("c")
 
@@ -298,40 +203,7 @@ target("libspeex")
         set_warnings("none")  -- Disable warnings as per premake5
     end
 
--- tinygettext
-target("tinygettext")
-    set_kind("static")
-    set_languages("cxx")
 
-    add_files("tinygettext/*.cpp")
-    add_headerfiles("tinygettext/*.hpp")
-    add_includedirs("tinygettext")
-
--- blowfish_bcrypt
-target("blowfish_bcrypt")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("bcrypt/*.c")
-    add_headerfiles("bcrypt/*.h")
-
--- lunasvg
-target("lunasvg")
-    set_kind("static")
-    set_languages("cxx17")  -- Requires C++17 for std::string_view, std::optional, std::clamp
-
-    -- Match premake5 configuration
-    add_defines("PLUTOVG_BUILD", "LUNASVG_BUILD", "_CRT_SECURE_NO_WARNINGS")
-    set_fpmodels("fast")
-    set_runtimes("MD")
-    add_includedirs("lunasvg/3rdparty/plutovg", "lunasvg/source", "lunasvg/include", {public = true})
-    -- Include all files recursively like premake5 does
-    add_files("lunasvg/**.cpp")
-    add_files("lunasvg/**.c")
-    add_headerfiles("lunasvg/**.h")
-    if is_plat("windows") then
-        set_warnings("none")  -- Disable warnings as per premake5
-    end
 
 -- freetype
 target("freetype")
@@ -427,16 +299,6 @@ target("pme")
     add_headerfiles("pme/pme.h")
     add_includedirs("pcre")
 
--- zip
-target("zip")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("zip/*.c")
-    add_headerfiles("zip/*.h")
-    add_includedirs("zlib")
-    add_deps("zlib")
-
 -- pthread (Windows pthread implementation)
 target("pthread")
     set_kind("shared")
@@ -455,23 +317,6 @@ target("pthread")
     )
     add_includedirs("pthreads/include")
 
--- CEF (Chromium Embedded Framework)
-target("CEF")
-    set_kind("static")
-    set_languages("cxx17")  -- CEF requires C++17 for std::in_place_t and other features
-
-    -- Match premake5 configuration
-    add_defines("__STDC_CONSTANT_MACROS", "__STDC_FORMAT_MACROS", "_FILE_OFFSET_BITS=64")
-    add_defines("_WINDOWS", "UNICODE", "_UNICODE", "WINVER=0x0602", "_WIN32_WINNT=0x602", "NOMINMAX", "WIN32_LEAN_AND_MEAN", "_HAS_EXCEPTIONS=0")
-    add_defines("PSAPI_VERSION=1", "WRAPPING_CEF_SHARED")
-
-    add_includedirs("cef3/cef", {public = true})
-    add_files("cef3/cef/libcef_dll/**.cc")
-    add_headerfiles("cef3/**.h")
-
-    -- Add the CEF library directory and dependencies
-    add_linkdirs("cef3/cef/Release", {public = true})
-    add_links("libcef", "Psapi", "version", "Winmm", "Ws2_32", "DbgHelp", {public = true})
 
 -- Lua_Client (separate lua build for client)
 target("Lua_Client")
@@ -482,6 +327,9 @@ target("Lua_Client")
     add_headerfiles("lua/src/*.h")
     -- Remove lua interpreter main
     remove_files("lua/src/lua.c", "lua/src/luac.c")
+
+    -- Add API check defines for debug builds
+    add_defines("LUA_USE_APICHECK")
 
 -- unrar
 target("unrar")
@@ -566,4 +414,25 @@ target("portaudio")
     else
         -- Disable deprecation warnings on Windows
         add_cxxflags("/wd4996", {force = true})
+    end
+
+-- lunasvg
+target("lunasvg")
+    set_kind("static")
+    set_languages("cxx17")  -- lunasvg requires C++17 for std::clamp, std::string_view, etc.
+    set_runtimes("MT")  -- Use static runtime to match main project
+
+    add_defines("PLUTOVG_BUILD", "LUNASVG_BUILD", "_CRT_SECURE_NO_WARNINGS")
+    add_includedirs("lunasvg/3rdparty/plutovg", "lunasvg/source", "lunasvg/include")
+    add_files("lunasvg/source/*.cpp", "lunasvg/3rdparty/plutovg/*.c")
+    add_headerfiles("lunasvg/include/**/*.h", "lunasvg/source/*.h", "lunasvg/3rdparty/**/*.h")
+
+    -- Disable specific warnings (matching premake)
+    if is_plat("windows") then
+        add_cxxflags("/wd4244", "/wd4018", {force = true})
+    end
+
+    -- Windows x86 only (matching premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
     end
