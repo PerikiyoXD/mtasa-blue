@@ -175,14 +175,6 @@ bool CResourceManager::Refresh(bool bRefreshAll, const SString strJustThisResour
                 // Add the resource
                 Load(!info.bIsDir, info.strAbsPath, info.strName);
             }
-            else if (bRefreshAll && pResource && pResource->HasResourceChanged())
-            {
-                if (g_pServerInterface->IsRequestingExit())
-                    return false;
-
-                // Resource exists but has changed, reload it
-                Load(!info.bIsDir, info.strAbsPath, info.strName);
-            }
         }
     }
 
