@@ -22,19 +22,10 @@
 #include "CMainConfig.h"
 #include "CDatabaseManager.h"
 #include "CRegistry.h"
+#include <SResInfo.h>
 
 #define BLOCKED_DB_FILE_NAME    "fileblock.db"
 #define BLOCKED_DB_TABLE_NAME   "`block_reasons`"
-
-// SResInfo - Item in list of potential resources - Used in Refresh()
-struct SResInfo
-{
-    SString strAbsPath;
-    SString strName;
-    bool    bIsDir;
-    bool    bPathIssue;
-    SString strAbsPathDup;
-};
 
 CResourceManager::CResourceManager()
 {
@@ -188,7 +179,7 @@ bool CResourceManager::Refresh(bool bRefreshAll, const SString strJustThisResour
             {
                 if (g_pServerInterface->IsRequestingExit())
                     return false;
-                    
+
                 // Resource exists but has changed, reload it
                 Load(!info.bIsDir, info.strAbsPath, info.strName);
             }

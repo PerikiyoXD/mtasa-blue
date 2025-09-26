@@ -10,22 +10,13 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include <SResInfo.h>
 
 using std::list;
 
 extern CCoreInterface*         g_pCore;
 extern CLocalizationInterface* g_pLocalization;
 extern CClientGame*            g_pClientGame;
-
-// SResInfo - Item in list of potential resources - Used in GetResourceNameList()
-struct SResInfo
-{
-    SString strAbsPath;
-    SString strName;
-    bool    bIsDir;
-    bool    bPathIssue;
-    SString strAbsPathDup;
-};
 
 CLocalServer::CLocalServer(const char* szConfig)
 {
