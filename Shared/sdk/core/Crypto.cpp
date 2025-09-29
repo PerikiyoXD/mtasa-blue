@@ -17,8 +17,8 @@
 #include <cryptopp/hmac.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/md5.h>
-#include <zlib/zlib.h>
-#include "SharedUtil.Crypto.h"
+#include <zlib.h>
+#include "Crypto.h"
 
 namespace SharedUtil
 {

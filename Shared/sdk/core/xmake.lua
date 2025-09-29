@@ -11,5 +11,5 @@ target("Shared SDK Core")
     end
 
     add_deps("tinyxml")
-    add_packages("cryptopp")
+    add_packages("cryptopp", "zlib")
 target_end()

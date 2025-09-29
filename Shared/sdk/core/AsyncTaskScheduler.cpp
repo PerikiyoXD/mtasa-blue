@@ -59,7 +59,7 @@ namespace SharedUtil
             }
 
             // Get task and remove from front
-            std::unique_ptr<SBaseTask> pTask = std::move(m_Tasks.front());
+            std::shared_ptr<SBaseTask> pTask = std::move(m_Tasks.front());
             m_Tasks.pop();
 
             m_TasksMutex.unlock();

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Hash.h"
 #include "SString.h"
 
 namespace SharedUtil
@@ -20,7 +21,7 @@ namespace SharedUtil
 
     SString Base64encode(const SString& data, const SString& variant = SString());
     SString Base64decode(const SString& data, const SString& variant = SString());
-    
+
     SString Base32encode(const SString& data, const SString& variant = SString());
     SString Base32decode(const SString& data, const SString& variant = SString());
 

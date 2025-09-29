@@ -15,7 +15,7 @@
 #include "../Common.h"
 #include <string>
 #include "IntTypes.h"
-#include "Math.h"
+#include "SharedMath.h"
 #include "Misc.h"
 #include "Logging.h"
 #include <vector>

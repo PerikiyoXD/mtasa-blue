@@ -48,10 +48,10 @@
 #endif
 #include "core/Misc.h"
 #include "core/File.h"
-#include "core/Time.h"
+#include "core/SharedTime.h"
 #include "core/Buffer.h"
 #include "core/Game.h"
-#include "core/Math.h"
+#include "core/SharedMath.h"
 #include "core/ClassIdent.h"
 #include "core/Hash.h"
 #include "core/Crypto.h"
