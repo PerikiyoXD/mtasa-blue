@@ -25,6 +25,9 @@ includes("tinygettext")
 includes("tinyxml")
 includes("pcre")
 includes("pthreads")
+includes("json-c")
+includes("sqlite")
+includes("google-breakpad")
 
 -- Client Targets
 if is_client() then

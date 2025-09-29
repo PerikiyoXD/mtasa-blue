@@ -24,5 +24,6 @@ target("Server Deathmatch")
     end
 
     add_defines("SDK_WITH_BCRYPT")
-    add_deps("blowfish_bcrypt", "cryptopp", "ehs", "glob", "json-c", "pcre", "pme", "sqlite", "zip", "zlib")
+    add_packages("cryptopp", "zip", "zlib")
+    add_deps("blowfish_bcrypt", "ehs", "glob", "json-c", "pcre", "pme", "sqlite")
 target_end()

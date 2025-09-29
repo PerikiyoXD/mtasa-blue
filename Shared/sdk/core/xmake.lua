@@ -1,4 +1,4 @@
-target("Shared SDK Core")
+target("Shared SDK")
     set_kind("static")
     set_basename("shared_sdk_core")
     set_languages("cxx23")
@@ -12,4 +12,8 @@ target("Shared SDK Core")
 
     add_deps("tinyxml", "pthread")
     add_packages("cryptopp", "zlib", "detours")
+
+    if is_plat("windows") then
+        add_links("shell32")
+    end
 target_end()

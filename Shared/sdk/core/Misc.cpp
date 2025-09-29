@@ -16,6 +16,7 @@
 #include <map>
 
 #include "UTF8.h"
+#include "UTF8.hpp"
 #include "UTF8Detect.hpp"
 #include "CDuplicateLineFilter.h"
 #include "version.h"

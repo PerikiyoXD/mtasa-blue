@@ -5,5 +5,5 @@ target("Shared XML")
 
     add_files("**.cpp")
     add_includedirs(".", {public = true})
-    add_deps("tinyxml", "Shared SDK Core")
+    add_deps("tinyxml", "Shared SDK")
 target_end()

@@ -6,9 +6,7 @@
 #include <map>
 #include <list>
 
-#ifndef DEFINED_SHARED_UTIL
-    #include "SharedUtil.h"
-#endif
+
 class EHSConnection;
 class EHS;
 class Datum;
@@ -17,35 +15,34 @@ class HttpResponse;
 class HttpRequest;
 
 /// generic std::string => std::string map used by many things
-typedef std::map < std::string, std::string > StringMap;
+typedef std::map<std::string, std::string> StringMap;
 
 /// generic list of std::strings
-typedef std::list < std::string > StringList;
+typedef std::list<std::string> StringList;
 
 /// Define a list of EHSConnection objects to handle all current connections
-typedef std::list < EHSConnection * > EHSConnectionList;
+typedef std::list<EHSConnection*> EHSConnectionList;
 
 // map for registered EHS objects on a path
-typedef std::map < std::string, EHS * > EHSMap;
+typedef std::map<std::string, EHS*> EHSMap;
 
 /// map type for storing EHSServer parameters
-typedef std::map < std::string, Datum > EHSServerParameters;
+typedef std::map<std::string, Datum> EHSServerParameters;
 
 /// cookies that come in from the client, mapped by name
-typedef std::map < std::string, std::string > CookieMap;
+typedef std::map<std::string, std::string> CookieMap;
 
 /// describes a form value that came in from a client
-typedef std::map < std::string, FormValue > FormValueMap;
+typedef std::map<std::string, FormValue> FormValueMap;
 
 /// describes a cookie to be sent back to the client
-typedef std::map < std::string, Datum > CookieParameters;
+typedef std::map<std::string, Datum> CookieParameters;
 
 /// holds respose objects not yet ready to send
-typedef std::map < int, HttpResponse * > HttpResponseMap;
+typedef std::map<int, HttpResponse*> HttpResponseMap;
 
 /// holds a list of pending requests
-typedef std::list < HttpRequest * > HttpRequestList;
-
+typedef std::list<HttpRequest*> HttpRequestList;
 
 struct SAllocationStats
 {

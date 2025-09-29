@@ -18,7 +18,7 @@ target("CEGUI")
 
 	add_defines("CEGUIBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
 
-    add_deps("pcre", "tinyxml", "tinygettext", "Shared SDK Core")
+    add_deps("pcre", "tinyxml", "tinygettext", "Shared SDK")
     add_packages("freetype")
 target_end()
 

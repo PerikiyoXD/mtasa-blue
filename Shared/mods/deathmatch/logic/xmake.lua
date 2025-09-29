@@ -5,6 +5,6 @@ target("SharedModDeathmatchLogic")
     add_files("**.cpp")
     add_includedirs(".", {public = true})
 
-    add_deps("Shared SDK Core")
+    add_deps("Shared SDK")
     add_packages("cryptopp")
 target_end()

@@ -5,6 +5,6 @@ target("Shared SDK Crypto")
     add_files("**.cpp")
     add_includedirs(".", {public = true})
 
-    add_deps("tinyxml", "Shared SDK Core")
+    add_deps("tinyxml", "Shared SDK")
     add_packages("cryptopp")
 target_end()
