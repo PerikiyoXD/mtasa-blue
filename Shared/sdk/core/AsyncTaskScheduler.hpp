@@ -71,10 +71,10 @@ namespace SharedUtil
         template <typename TaskFn, typename ReadyFn>
         void PushTask(TaskFn&& task, ReadyFn&& ready)
         {
-            std::unique_ptr<SBaseTask> pTask{new STask{std::move(task), std::move(ready)}};
+            std::shared_ptr<SBaseTask> pTask{new STask{std::move(task), std::move(ready)}};
 
             std::scoped_lock<std::mutex> lock{m_TasksMutex};
-            m_Tasks.emplace(std::move(pTask));
+            m_Tasks.emplace(pTask);
         }
 
         //
@@ -91,10 +91,10 @@ namespace SharedUtil
         std::vector<std::thread> m_Workers;
         bool                     m_Running = true;
 
-        std::queue<std::unique_ptr<SBaseTask>, std::deque<std::unique_ptr<SBaseTask>>> m_Tasks;
+        std::queue<std::shared_ptr<SBaseTask>> m_Tasks;
         std::mutex                             m_TasksMutex;
 
-        std::vector<std::unique_ptr<SBaseTask>> m_TaskResults;
+        std::vector<std::shared_ptr<SBaseTask>> m_TaskResults;
         std::mutex                              m_TaskResultsMutex;
     };
 

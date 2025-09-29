@@ -17,7 +17,6 @@ extern CLocalizationInterface* g_pLocalization;
     #include <CVector.h>
     #include <CVector2D.h>
     #include <net/bitstream.h>
-    #include <cmath>
     #include "CCommon.h"
     #include "CPad.h"
     #include "packets/CPlayerDisconnectedPacket.h"

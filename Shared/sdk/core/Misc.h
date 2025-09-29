@@ -12,7 +12,6 @@
 
 #include <string_view>
 #include <cassert>
-#include <cmath>
 #include <vector>
 #include <deque>
 #include <list>
