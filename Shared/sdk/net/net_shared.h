@@ -1,0 +1,9 @@
+#pragma once
+
+enum ePacketOrdering
+{
+    PACKET_ORDERING_DEFAULT = 0,
+    PACKET_ORDERING_CHAT,
+    PACKET_ORDERING_DATA_TRANSFER,
+    PACKET_ORDERING_VOICE,
+};
