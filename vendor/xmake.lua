@@ -7,6 +7,7 @@ add_requires("zlib-ng", {alias = "zlib", configs = {zlib_compat = true, shared =
 add_requires("libpng", {configs = {shared = false}})
 add_requires("libjpeg v9f", {configs = {shared = false}})
 add_requires("minizip-ng", {alias = "zip", configs = {shared = false}})
+add_requires("freetype", {configs = {shared = false}})
 
 -- Windows-only requirements
 if is_client() then
@@ -23,72 +24,22 @@ includes("bcrypt")
 includes("tinygettext")
 includes("tinyxml")
 includes("pcre")
+includes("pthreads")
 
 -- Client Targets
 if is_client() then
     includes("dxsdk")
     includes("ksignals")
     includes("cef3")
+    includes("cegui-0.4.0-custom")
 end
 
 
--- CEGUI
-target("CEGUI")
-    set_kind("static")
-    set_languages("cxx")
 
-    add_files("cegui-0.4.0-custom/src/**.cpp")
-    add_headerfiles("cegui-0.4.0-custom/include/**.h")
-    add_includedirs("cegui-0.4.0-custom/include", "cegui-0.4.0-custom/dependencies/include", "freetype/include", {public = true})
-
-    -- Exclude the renderer directory (built separately)
-    remove_files("cegui-0.4.0-custom/src/renderers/**")
-
-    add_defines("CEGUIBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
-    add_deps("freetype", "pcre-static")
-
-    -- Windows x86 only (from premake)
-    if not is_plat("windows") or not is_arch("x86") then
-        set_enabled(false)
-    end
 
 -- DirectX9GUIRenderer
-target("DirectX9GUIRenderer")
-    set_kind("static")
-    set_languages("cxx")
 
-    add_defines("_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
-    add_includedirs("cegui-0.4.0-custom/include")
-    add_files(
-        "cegui-0.4.0-custom/src/renderers/directx9GUIRenderer/d3d9renderer.cpp",
-        "cegui-0.4.0-custom/src/renderers/directx9GUIRenderer/d3d9texture.cpp"
-    )
-    add_headerfiles(
-        "cegui-0.4.0-custom/include/renderers/d3d9texture.h",
-        "cegui-0.4.0-custom/include/renderers/d3d9renderer.h"
-    )
-    add_deps("CEGUI")
 
-    -- Windows x86 only (from premake)
-    if not is_plat("windows") or not is_arch("x86") then
-        set_enabled(false)
-    end
-
--- Falagard
-target("Falagard")
-    set_kind("static")
-    set_languages("cxx")
-
-    add_defines("FALAGARDBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
-    add_includedirs("cegui-0.4.0-custom/WidgetSets/Falagard/include", "cegui-0.4.0-custom/include")
-    add_files("cegui-0.4.0-custom/WidgetSets/Falagard/src/*.cpp")
-    add_headerfiles("cegui-0.4.0-custom/WidgetSets/Falagard/include/*.h")
-    add_deps("CEGUI")
-
-    -- Windows x86 only (from premake)
-    if not is_plat("windows") or not is_arch("x86") then
-        set_enabled(false)
-    end
 
 
 -- pcre-static (renamed to avoid conflict with pcre shared library)
@@ -217,25 +168,6 @@ target("pme")
     add_files("pme/pme.cpp")
     add_headerfiles("pme/pme.h")
     add_includedirs("pcre")
-
--- pthread (Windows pthread implementation)
-target("pthread")
-    set_kind("shared")
-    set_languages("cxx")
-    set_targetdir("$(projectdir)/Bin/server")
-
-    add_files("pthreads/include/pthread.c")
-    add_headerfiles(
-        "pthreads/include/config.h",
-        "pthreads/include/context.h",
-        "pthreads/include/implement.h",
-        "pthreads/include/need_errno.h",
-        "pthreads/include/pthread.h",
-        "pthreads/include/sched.h",
-        "pthreads/include/semaphore.h"
-    )
-    add_includedirs("pthreads/include")
-
 
 -- Lua_Client (separate lua build for client)
 target("Lua_Client")

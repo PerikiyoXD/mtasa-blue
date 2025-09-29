@@ -16,21 +16,9 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "unix_file_system.hpp"
-
-#include <sys/types.h>
 #include <fstream>
-#ifdef WIN32
-  #include <windows.h>
-  #include <UTF8.h>
-  #include <dirent_win32.h>
-  #ifdef TGT_STANDALONE
-    #include <UTF8.hpp>
-  #endif
-#else
-  #include <dirent.h>
-#endif
-#include <stdlib.h>
-#include <string.h>
+#include <filesystem>
+#include <system_error>
 
 namespace tinygettext {
 
@@ -41,68 +29,53 @@ UnixFileSystem::UnixFileSystem()
 bool
 UnixFileSystem::open_directory(const std::string& pathname, std::vector<std::string>& files, std::vector<std::string>& dirs)
 {
-  DIR* dir = opendir(pathname.c_str());
-  if (!dir)
+  std::error_code ec;
+  std::filesystem::path dir_path(std::filesystem::u8path(pathname));
+  
+  if (!std::filesystem::exists(dir_path, ec) || !std::filesystem::is_directory(dir_path, ec))
   {
-    // FIXME: error handling
     return false;
   }
-  else
+
+  for (const auto& entry : std::filesystem::directory_iterator(dir_path, ec))
   {
-    struct dirent* dp;
-    while((dp = readdir(dir)) != 0)
+    if (ec)
     {
-	  const char* path = dp->d_name;
-      switch (dp->d_type)
+      return false;
+    }
+
+    auto u8filename = entry.path().filename().u8string();
+    std::string filename(u8filename.begin(), u8filename.end());
+    
+    if (entry.is_regular_file(ec))
+    {
+      files.push_back(filename);
+    }
+    else if (entry.is_directory(ec))
+    {
+      if (filename != "." && filename != "..")
       {
-        case DT_REG:
-          files.push_back(path);
-          break;
-        case DT_DIR:
-        {
-          if( !strcmp(path, ".")) continue;
-          if( !strcmp(path, "..")) continue;
-          dirs.push_back(path);
-          break;
-        }
-        default: 
-          break;
+        dirs.push_back(filename);
       }
     }
-    closedir(dir);
-
-    return true;
   }
+
+  return true;
 }
 
 std::unique_ptr<std::istream>
 UnixFileSystem::open_file(const std::string& filename)
 {
-#ifdef WIN32
-  return std::unique_ptr<std::istream>(new std::ifstream(utf8_mbstowcs(filename.c_str())));
-#else
-  return std::unique_ptr<std::istream>(new std::ifstream(filename.c_str()));
-#endif
+  std::filesystem::path file_path(std::filesystem::u8path(filename));
+  return std::unique_ptr<std::istream>(new std::ifstream(file_path));
 }
 
 bool
 UnixFileSystem::file_exists(const std::string& filename)
 {
-#ifdef WIN32
-  std::ifstream file( utf8_mbstowcs(filename.c_str()).c_str () );
-#else
-  std::ifstream file(filename.c_str());
-#endif
-  if (file.good())
-  {
-    file.close();
-    return true;
-  }
-  else
-  {
-    file.close();
-	return false;
-  }
+  std::error_code ec;
+  std::filesystem::path file_path(std::filesystem::u8path(filename));
+  return std::filesystem::exists(file_path, ec) && !ec;
 }
 
 } // namespace tinygettext

@@ -1,12 +1,12 @@
 target("CEGUI")
     set_kind("static")
     set_basename("CEGUI")
+    set_languages("cxx23")
 
-    set_pcxxheader("src/StdInc.h")
+    set_pcxxheader("include/StdInc.h")
 
     add_files("src/**.cpp",
-              "src/**.c",
-              "include/**.h")
+              "src/**.c")
 
     remove_files(
         "src/renderers/**",
@@ -18,5 +18,8 @@ target("CEGUI")
 
 	add_defines("CEGUIBASE_EXPORTS", "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING")
 
-    add_deps("freetype", "pcre", "tinyxml", "tinygettext")
+    add_deps("pcre", "tinyxml", "tinygettext", "Shared SDK Core")
+    add_packages("freetype")
 target_end()
+
+includes("src/renderers/directx9GUIRenderer")

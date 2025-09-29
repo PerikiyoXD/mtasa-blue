@@ -1,10 +1,10 @@
 /************************************************************************
-	filename: 	CEGUIFontManager_implData.h
-	created:	23/6/2004
-	author:		Paul D Turner
-	
-	purpose:	Implementation data for FontManager to break 
-				dependency on FreeType2 for clients
+    filename: 	CEGUIFontManager_implData.h
+    created:	23/6/2004
+    author:		Paul D Turner
+
+    purpose:	Implementation data for FontManager to break
+                dependency on FreeType2 for clients
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -30,16 +30,14 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-struct FontManager::FontManagerImplData
-{
-	FT_Library		d_ftlib;		//!< FreeType library;
-};
+    struct FontManager::FontManagerImplData
+    {
+        FT_Library d_ftlib;            //!< FreeType library;
+    };
 
-} // End of  CEGUI namespace section
+}            // namespace CEGUI
 
-
-#endif	// end of guard _CEGUIFontManager_implData_h_
+#endif            // end of guard _CEGUIFontManager_implData_h_

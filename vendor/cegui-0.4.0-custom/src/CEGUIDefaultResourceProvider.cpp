@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIDefaultResourceProvider.cpp
-	created:	8/7/2004
-	author:		James '_mental_' O'Sullivan
-	
-	purpose:	Implements the Resource Manager common functionality
+    filename: 	CEGUIDefaultResourceProvider.cpp
+    created:	8/7/2004
+    author:		James '_mental_' O'Sullivan
+
+    purpose:	Implements the Resource Manager common functionality
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -32,76 +32,73 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//    void DefaultResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
-//    {
-//        if (filename.empty() || (filename == (utf8*)""))
-//        {
-//            throw InvalidRequestException((utf8*)
-//                "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
-//        }
-//
-//        XERCES_CPP_NAMESPACE_USE
-//        XMLCh* pval = XMLString::transcode(filename.c_str());
-//        InputSource* mInputSource = new LocalFileInputSource(pval);
-//        XMLString::release(&pval);
-//
-//        output.setData(mInputSource);
-//    }
+    //    void DefaultResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
+    //    {
+    //        if (filename.empty() || (filename == (utf8*)""))
+    //        {
+    //            throw InvalidRequestException((utf8*)
+    //                "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
+    //        }
+    //
+    //        XERCES_CPP_NAMESPACE_USE
+    //        XMLCh* pval = XMLString::transcode(filename.c_str());
+    //        InputSource* mInputSource = new LocalFileInputSource(pval);
+    //        XMLString::release(&pval);
+    //
+    //        output.setData(mInputSource);
+    //    }
 
     void DefaultResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup)
     {
         if (filename.empty() || (filename == (utf8*)""))
         {
-            throw InvalidRequestException((utf8*)
-                "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
+            throw InvalidRequestException((utf8*)"DefaultResourceProvider::load - Filename supplied for data loading must be valid");
         }
 
-
-        std::wstring strFilename1 = filename.c_wstring ();
-        std::wstring strFilename2 = System::getSingleton ().GetGuiWorkingDirectory().c_wstring () + strFilename1;
+        std::wstring strFilename1 = filename.c_wstring();
+        std::wstring strFilename2 = System::getSingleton().GetGuiWorkingDirectory().c_wstring() + strFilename1;
 
         // If supplied filename looks like it is absolute, try that first
         bool bIsAbsolutePath = false;
         {
-            SString strTemp = PathConform ( filename.c_str () );
-            if ( strTemp.Contains ( ":" ) || strTemp.BeginsWith ( "\\" ) )
-                std::swap ( strFilename1, strFilename2 );
+            SString strTemp = PathConform(filename.c_str());
+            if (strTemp.Contains(":") || strTemp.BeginsWith("\\"))
+                std::swap(strFilename1, strFilename2);
         }
 
-
         std::ifstream dataFile;
-        dataFile.open(strFilename2.c_str (), std::ios::binary|std::ios::ate);
+        dataFile.open(strFilename2.c_str(), std::ios::binary | std::ios::ate);
 
-        if( dataFile.fail())
+        if (dataFile.fail())
         {
             dataFile.clear();
-            dataFile.open(strFilename1.c_str (), std::ios::binary|std::ios::ate);
-            if( dataFile.fail())
+            dataFile.open(strFilename1.c_str(), std::ios::binary | std::ios::ate);
+            if (dataFile.fail())
             {
-                throw InvalidRequestException((utf8*)
-                    "DefaultResourceProvider::load - " + filename + " does not exist");
+                throw InvalidRequestException((utf8*)"DefaultResourceProvider::load - " + filename + " does not exist");
             }
         }
         std::streampos size = dataFile.tellg();
-        dataFile.seekg (0, std::ios::beg);
+        dataFile.seekg(0, std::ios::beg);
 
-        unsigned char* buffer = new unsigned char [(uint)size];
+        unsigned char* buffer = new unsigned char[(uint)size];
 
-        try {
+        try
+        {
             dataFile.read(reinterpret_cast<char*>(buffer), size);
         }
-        catch(std::ifstream::failure e) {
-            delete [] buffer;
-            throw GenericException((utf8*)
-                "DefaultResourceProvider::loadRawDataContainer - Problem reading " + filename);
+        catch (std::ifstream::failure e)
+        {
+            delete[] buffer;
+            throw GenericException((utf8*)"DefaultResourceProvider::loadRawDataContainer - Problem reading " + filename);
         }
 
         dataFile.close();
 
-        //memcpy(container->getDataPtr(), buffer, size);
+        // memcpy(container->getDataPtr(), buffer, size);
         output.setData(buffer);
         output.setSize((size_t)size);
-        //delete [] buffer;
+        // delete [] buffer;
     }
 
-} // End of  CEGUI namespace section
+}            // namespace CEGUI
