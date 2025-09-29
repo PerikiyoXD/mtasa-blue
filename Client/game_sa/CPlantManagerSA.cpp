@@ -10,7 +10,7 @@ class CPlantColEntEntry
 public:
     CEntitySAInterface* m_Entity;
     CPlantLocTri**     m_Objects;
-    uint16             m_numTriangles;
+    std::uint16_t             m_numTriangles;
     CPlantColEntEntry* m_NextEntry;
     CPlantColEntEntry* m_PrevEntry;
 

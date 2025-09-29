@@ -1,0 +1,11 @@
+target("Shared SDK Core")
+    set_kind("static")
+    set_basename("shared_sdk_core")
+    set_languages("cxx23")
+
+    add_files("**.cpp")
+    add_includedirs(".", {public = true})
+
+    add_deps("tinyxml")
+    add_packages("cryptopp")
+target_end()

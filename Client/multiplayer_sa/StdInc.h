@@ -8,7 +8,7 @@
 #define SHARED_UTIL_WITH_FAST_HASH_MAP
 #define SHARED_UTIL_WITH_SYS_INFO
 #include "SharedUtil.h"
-#include "SharedUtil.MemAccess.h"
+#include "MemAccess.h"
 #include <stdio.h>
 
 // SDK includes

@@ -13,8 +13,8 @@
 
 #include <CVector.h>
 #include <net/bitstream.h>
-#include "SharedUtil.Game.h"
-#include "SharedUtil.Misc.h"
+#include "Game.h"
+#include "Misc.h"
 #include "CVector2D.h"
 
 #ifndef MTA_CLIENT

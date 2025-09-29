@@ -56,7 +56,7 @@ int CAudioContainerLookupTableSA::CountIndex(eAudioLookupIndex index)
     return m_Entries[index].size();
 }
 
-SAudioLookupEntrySA* CAudioContainerLookupTableSA::GetEntry(eAudioLookupIndex lookupIndex, uint8 bankIndex)
+SAudioLookupEntrySA* CAudioContainerLookupTableSA::GetEntry(eAudioLookupIndex lookupIndex, std::uint8_t bankIndex)
 {
     if (lookupIndex < 0 || lookupIndex > 8)
         return nullptr;

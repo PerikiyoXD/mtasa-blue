@@ -22,13 +22,13 @@ public:
     CVector      Normal;                    // 16
     float        fUnknown2;                 // 28
     EColSurface  ucSurfaceTypeA;            // 32
-    uint8        ucPieceTypeA;              // 33
+    std::uint8_t        ucPieceTypeA;              // 33
     CColLighting lightingA;                 // 34
     EColSurface  ucSurfaceTypeB;            // 35
-    uint8        ucPieceTypeB;              // 36
+    std::uint8_t        ucPieceTypeB;              // 36
     CColLighting lightingB;                 // 37
-    uint8        pad1;                      // 38
-    uint8        pad2;                      // 39
+    std::uint8_t        pad1;                      // 38
+    std::uint8_t        pad2;                      // 39
     float        fDepth;                    // 40
 };
 static_assert(sizeof(CColPointSAInterface) == 0x2C, "Invalid size for CColPointSAInterface");

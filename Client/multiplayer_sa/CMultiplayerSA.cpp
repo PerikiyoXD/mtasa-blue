@@ -342,14 +342,14 @@ float fDirectionalColorG = 0.0F;
 float fDirectionalColorB = 0.0F;
 
 bool  bUsingCustomLowCloudsColor = false;
-int16 iLowCloudsColorR = 0;
-int16 iLowCloudsColorG = 0;
-int16 iLowCloudsColorB = 0;
+std::int16_t iLowCloudsColorR = 0;
+std::int16_t iLowCloudsColorG = 0;
+std::int16_t iLowCloudsColorB = 0;
 
 bool  bUsingCustomBottomCloudsColor = false;
-int16 iBottomCloudsColorR = 0;
-int16 iBottomCloudsColorG = 0;
-int16 iBottomCloudsColorB = 0;
+std::int16_t iBottomCloudsColorR = 0;
+std::int16_t iBottomCloudsColorG = 0;
+std::int16_t iBottomCloudsColorB = 0;
 
 bool  bUsingCustomWaterColor = false;
 float fWaterColorR = 0.0F;
@@ -732,7 +732,7 @@ void CMultiplayerSA::InitHooks()
     HookInstall(HOOKPOS_CObject_ProcessCollision, (DWORD)HOOK_CObject_ProcessCollision, 10);
     HookInstall(HOOKPOS_CGlass_WindowRespondsToCollision, (DWORD)HOOK_CGlass_WindowRespondsToCollision, 8);
     HookInstall(HOOKPOS_CGlass__BreakGlassPhysically, (DWORD)HOOK_CGlass__BreakGlassPhysically, 5);
-    
+
     // Post-destruction hook for FxSystems
     HookInstall(HOOKPOS_FxManager_c__DestroyFxSystem, (DWORD)HOOK_FxManager_c__DestroyFxSystem, 5);
 
@@ -1368,7 +1368,7 @@ void CMultiplayerSA::InitHooks()
 
     // Disable the loading screen tune.
     MemSet((void*)0x748CF6, 0x90, 5);
-	
+
     // Do not render the loading screen.
     MemSet((void*)0x590D7C, 0x90, 5);
     MemSet((void*)0x590DB3, 0x90, 5);
@@ -1566,7 +1566,7 @@ void CMultiplayerSA::InitHooks()
       // Disable spreading fires (Moved from multiplayer_shotsync)
     MemCpy((void*)0x53A23F, "\x33\xC0\x90\x90\x90", 5);
     MemCpy((void*)0x53A00A, "\x33\xC0\x90\x90\x90", 5);
-    
+
     InitHooks_CrashFixHacks();
     InitHooks_DeviceSelection();
 
@@ -2398,18 +2398,18 @@ bool CMultiplayerSA::ResetSpriteBrightness()
     return true;
 }
 
-int16 CMultiplayerSA::GetPoleShadowStrength() const
+std::int16_t CMultiplayerSA::GetPoleShadowStrength() const
 {
-    return *(int16*)0xB7C4EC;
+    return *(std::int16_t*)0xB7C4EC;
 }
 
-bool CMultiplayerSA::SetPoleShadowStrength(int16 strength)
+bool CMultiplayerSA::SetPoleShadowStrength(std::int16_t strength)
 {
     MemSet((LPVOID)0x55FCB8, 0x90, 4);
     MemSet((LPVOID)(0x56023A + 2), 0x90, 3);
     MemSet((LPVOID)(0x5602A6 + 2), 0x90, 3);
 
-    MemPutFast<int16>(0xB7C4EC, strength);
+    MemPutFast<std::int16_t>(0xB7C4EC, strength);
     return true;
 }
 
@@ -2424,12 +2424,12 @@ bool CMultiplayerSA::ResetPoleShadowStrength()
     return true;
 }
 
-int16 CMultiplayerSA::GetShadowStrength() const
+std::int16_t CMultiplayerSA::GetShadowStrength() const
 {
-    return *(int16*)0xB7C4E8;
+    return *(std::int16_t*)0xB7C4E8;
 }
 
-bool CMultiplayerSA::SetShadowStrength(int16 strength)
+bool CMultiplayerSA::SetShadowStrength(std::int16_t strength)
 {
     MemSet((LPVOID)0x55FC5E, 0x90, 4);
     MemSet((LPVOID)(0x56022E + 2), 0x90, 3);
@@ -2437,7 +2437,7 @@ bool CMultiplayerSA::SetShadowStrength(int16 strength)
     MemSet((LPVOID)(0x56029A + 2), 0x90, 3);
     MemSet((LPVOID)(0x5602A0 + 2), 0x90, 3);
 
-    MemPutFast<int16>(0xB7C4E8, strength);
+    MemPutFast<std::int16_t>(0xB7C4E8, strength);
     return true;
 }
 
@@ -2497,15 +2497,15 @@ bool CMultiplayerSA::ResetLightsOnGroundBrightness()
     return true;
 }
 
-void CMultiplayerSA::GetLowCloudsColor(int16& red, int16& green, int16& blue) const
+void CMultiplayerSA::GetLowCloudsColor(std::int16_t& red, std::int16_t& green, std::int16_t& blue) const
 {
     if (bUsingCustomLowCloudsColor)
         red = iLowCloudsColorR, green = iLowCloudsColorG, blue = iLowCloudsColorB;
     else
-        red = *(int16*)0xB7C4FC, green = *(int16*)0xB7C4FE, blue = *(int16*)0xB7C500;
+        red = *(std::int16_t*)0xB7C4FC, green = *(std::int16_t*)0xB7C4FE, blue = *(std::int16_t*)0xB7C500;
 }
 
-bool CMultiplayerSA::SetLowCloudsColor(int16 red, int16 green, int16 blue)
+bool CMultiplayerSA::SetLowCloudsColor(std::int16_t red, std::int16_t green, std::int16_t blue)
 {
     bUsingCustomLowCloudsColor = true;
     iLowCloudsColorR = red;
@@ -2520,15 +2520,15 @@ bool CMultiplayerSA::ResetLowCloudsColor()
     return true;
 }
 
-void CMultiplayerSA::GetBottomCloudsColor(int16& red, int16& green, int16& blue) const
+void CMultiplayerSA::GetBottomCloudsColor(std::int16_t& red, std::int16_t& green, std::int16_t& blue) const
 {
     if (bUsingCustomBottomCloudsColor)
         red = iBottomCloudsColorR, green = iBottomCloudsColorG, blue = iBottomCloudsColorB;
     else
-        red = *(int16*)0xB7C502, green = *(int16*)0xB7C504, blue = *(int16*)0xB7C506;
+        red = *(std::int16_t*)0xB7C502, green = *(std::int16_t*)0xB7C504, blue = *(std::int16_t*)0xB7C506;
 }
 
-bool CMultiplayerSA::SetBottomCloudsColor(int16 red, int16 green, int16 blue)
+bool CMultiplayerSA::SetBottomCloudsColor(std::int16_t red, std::int16_t green, std::int16_t blue)
 {
     bUsingCustomBottomCloudsColor = true;
     iBottomCloudsColorR = red;
@@ -3940,15 +3940,15 @@ void _cdecl DoEndWorldColorsPokes()
     }
     if (bUsingCustomLowCloudsColor)
     {
-        MemPutFast<int16>(0xB7C4FC, iLowCloudsColorR);
-        MemPutFast<int16>(0xB7C4FE, iLowCloudsColorG);
-        MemPutFast<int16>(0xB7C500, iLowCloudsColorB);
+        MemPutFast<std::int16_t>(0xB7C4FC, iLowCloudsColorR);
+        MemPutFast<std::int16_t>(0xB7C4FE, iLowCloudsColorG);
+        MemPutFast<std::int16_t>(0xB7C500, iLowCloudsColorB);
     }
     if (bUsingCustomBottomCloudsColor)
     {
-        MemPutFast<int16>(0xB7C502, iBottomCloudsColorR);
-        MemPutFast<int16>(0xB7C504, iBottomCloudsColorG);
-        MemPutFast<int16>(0xB7C506, iBottomCloudsColorB);
+        MemPutFast<std::int16_t>(0xB7C502, iBottomCloudsColorR);
+        MemPutFast<std::int16_t>(0xB7C504, iBottomCloudsColorG);
+        MemPutFast<std::int16_t>(0xB7C506, iBottomCloudsColorB);
     }
     if (bUsingCustomWaterColor)
     {
@@ -4019,7 +4019,7 @@ static void __declspec(naked) HOOK_ComputeDamageResponse_StartChoking()
         // Get weapon type before pushad to avoid stack offset corruption
         mov     al, [esp+0x8]
         mov     ucChokingWeaponType, al
-        
+
         pushad
 
         mov     ebx, [m_pChokingHandler]
@@ -4036,7 +4036,7 @@ static void __declspec(naked) HOOK_ComputeDamageResponse_StartChoking()
         jnz     continueWithOriginalCode
         popad
         jmp     dwChokingDontchoke
-    
+
         continueWithOriginalCode:
         popad
         mov     ecx, [edi]

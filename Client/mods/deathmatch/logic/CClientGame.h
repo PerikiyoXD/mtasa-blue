@@ -193,7 +193,7 @@ public:
         QUIT_CONNECTION_DESYNC,
         QUIT_TIMEOUT,
     };
-    
+
     enum
     {
         GLITCH_QUICKRELOAD,
@@ -405,7 +405,7 @@ public:
                        AnimationId animId = 15);
     void SendPedWastedPacket(CClientPed* Ped, ElementID damagerID = INVALID_ELEMENT_ID, unsigned char ucWeapon = 0xFF, unsigned char ucBodyPiece = 0xFF,
                              AssocGroupId animGroup = 0, AnimationId animID = 15);
-    
+
     void ClearDamageData() noexcept {
         m_DamagerID = INVALID_ELEMENT_ID;
         m_ucDamageWeapon = WEAPONTYPE_INVALID;
@@ -413,11 +413,11 @@ public:
         m_ulDamageTime = 0;
         m_serverProcessedDeath = true;
     }
-    
+
     void ResetDeathProcessingFlag() noexcept {
         m_serverProcessedDeath = false;
     }
-    
+
     void SetScriptedDeathData() {
         auto* localPlayer = GetLocalPlayer();
         if (!localPlayer) {
@@ -428,14 +428,14 @@ public:
             m_serverProcessedDeath = false;
             return;
         }
-        
+
         m_DamagerID = INVALID_ELEMENT_ID;
         m_ucDamageWeapon = TryGetCurrentWeapon(localPlayer);
         m_ucDamageBodyPiece = BODYPART_TORSO;
         m_ulDamageTime = CClientTime::GetTime();
         m_serverProcessedDeath = false;
     }
-    
+
     void SetExplosionDamageData() noexcept {
         m_DamagerID = INVALID_ELEMENT_ID;
         m_ucDamageWeapon = WEAPONTYPE_EXPLOSION;
@@ -509,7 +509,7 @@ public:
     void ReinitMarkers();
 
     void OnWindowFocusChange(bool state);
-    
+
     void SetAllowMultiCommandHandlers(MultiCommandHandlerPolicy policy) noexcept { m_allowMultiCommandHandlers = policy; }
     MultiCommandHandlerPolicy GetAllowMultiCommandHandlers() const noexcept { return m_allowMultiCommandHandlers; }
 
@@ -589,7 +589,7 @@ private:
                                                      int* pFlags, RpClump* pClump);
     static bool StaticProcessCollisionHandler(CEntitySAInterface* pThisInterface, CEntitySAInterface* pOtherInterface);
     static bool StaticVehicleCollisionHandler(CVehicleSAInterface*& pThisInterface, CEntitySAInterface* pOtherInterface, int iModelIndex,
-                                              float fDamageImpulseMag, float fCollidingDamageImpulseMag, uint16 usPieceType, CVector vecCollisionPos,
+                                              float fDamageImpulseMag, float fCollidingDamageImpulseMag, std::uint16_t usPieceType, CVector vecCollisionPos,
                                               CVector vecCollisionVelocity, bool isProjectile);
     static bool StaticVehicleDamageHandler(CEntitySAInterface* pVehicleInterface, float fLoss, CEntitySAInterface* pAttackerInterface, eWeaponType weaponType,
                                            const CVector& vecDamagePos, uchar ucTyre);
@@ -635,7 +635,7 @@ private:
                                                RpClump* pClump);
     bool        ProcessCollisionHandler(CEntitySAInterface* pThisInterface, CEntitySAInterface* pOtherInterface);
     bool        VehicleCollisionHandler(CVehicleSAInterface*& pCollidingVehicle, CEntitySAInterface* pCollidedVehicle, int iModelIndex, float fDamageImpulseMag,
-                                        float fCollidingDamageImpulseMag, uint16 usPieceType, CVector vecCollisionPos, CVector vecCollisionVelocity, bool isProjectile);
+                                        float fCollidingDamageImpulseMag, std::uint16_t usPieceType, CVector vecCollisionPos, CVector vecCollisionVelocity, bool isProjectile);
     bool        VehicleDamageHandler(CEntitySAInterface* pVehicleInterface, float fLoss, CEntitySAInterface* pAttackerInterface, eWeaponType weaponType,
                                      const CVector& vecDamagePos, uchar ucTyre);
     bool        HeliKillHandler(CVehicleSAInterface* pHeli, CEntitySAInterface* pHitInterface);
@@ -918,9 +918,9 @@ private:
     AnimAssociations_type                                m_mapOfCustomAnimationAssociations;
     // Key is the task and value is the CClientPed*
     RunNamedAnimTask_type m_mapOfRunNamedAnimTasks;
-    
+
     MultiCommandHandlerPolicy m_allowMultiCommandHandlers;
-    
+
     long long m_timeLastDiscordStateUpdate;
 };
 

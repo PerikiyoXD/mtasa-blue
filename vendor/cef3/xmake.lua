@@ -8,7 +8,7 @@ target("CEF")
         set_enabled(false)
     end
 
-    set_languages("cxx17")
+    set_languages("cxx23")
 
 	-- Source files and headers
     add_files("cef/libcef_dll/**.cc")

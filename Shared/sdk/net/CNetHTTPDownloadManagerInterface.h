@@ -14,7 +14,7 @@
 #include <map>
 #include <cassert>
 #include "SString.h"
-#include "SharedUtil.IntTypes.h"
+#include "IntTypes.h"
 
 struct SHttpRequestOptions
 {

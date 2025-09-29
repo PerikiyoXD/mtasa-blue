@@ -102,7 +102,7 @@ void CLuaWorldDefs::LoadFunctions()
                                                                              {"setCoronaReflectionsEnabled", ArgumentParser<SetCoronaReflectionsEnabled>},
                                                                              {"setWorldProperty", ArgumentParser<SetWorldProperty>},
 
-                                                                             // World remove/restore functions 
+                                                                             // World remove/restore functions
                                                                              {"removeWorldModel", RemoveWorldBuilding},
                                                                              {"restoreAllWorldModels", RestoreWorldBuildings},
                                                                              {"restoreWorldModel", RestoreWorldBuilding},
@@ -111,7 +111,7 @@ void CLuaWorldDefs::LoadFunctions()
 
                                                                              {"setTimeFrozen", ArgumentParser<SetTimeFrozen>},
                                                                              {"setVolumetricShadowsEnabled", ArgumentParser<SetVolumetricShadowsEnabled>},
-                                                                             {"setDynamicPedShadowsEnabled", ArgumentParser<SetDynamicPedShadowsEnabled>}, 
+                                                                             {"setDynamicPedShadowsEnabled", ArgumentParser<SetDynamicPedShadowsEnabled>},
 
 
                                                                              // World create funcs
@@ -138,8 +138,8 @@ void CLuaWorldDefs::LoadFunctions()
                                                                              {"resetTimeFrozen", ArgumentParser<ResetTimeFrozen>},
                                                                              {"resetVolumetricShadows", ArgumentParser<ResetVolumetricShadows>},
                                                                              {"resetWorldProperties", ArgumentParser<ResetWorldProperties>},
-                                                                             {"resetDynamicPedShadows", ArgumentParser<ResetDynamicPedShadows>},    
-      
+                                                                             {"resetDynamicPedShadows", ArgumentParser<ResetDynamicPedShadows>},
+
                                                                              // World check funcs
                                                                              {"areTrafficLightsLocked", AreTrafficLightsLocked},
                                                                              {"isPedTargetingMarkerEnabled", IsPedTargetingMarkerEnabled},
@@ -2100,19 +2100,19 @@ std::variant<bool, float, CLuaMultiReturn<float, float, float>> CLuaWorldDefs::G
         {
             float red, green, blue;
             g_pMultiplayer->GetAmbientColor(red, green, blue);
-            return std::make_tuple((int16)(red * 255), (int16)(green * 255), (int16)(blue * 255));
+            return std::make_tuple((std::int16_t)(red * 255), (std::int16_t)(green * 255), (std::int16_t)(blue * 255));
         }
         case WorldProperty::AMBIENT_OBJ_COLOR:
         {
             float red, green, blue;
             g_pMultiplayer->GetAmbientObjectColor(red, green, blue);
-            return std::make_tuple((int16)(red * 255), (int16)(green * 255), (int16)(blue * 255));
+            return std::make_tuple((std::int16_t)(red * 255), (std::int16_t)(green * 255), (std::int16_t)(blue * 255));
         }
         case WorldProperty::DIRECTIONAL_COLOR:
         {
             float red, green, blue;
             g_pMultiplayer->GetDirectionalColor(red, green, blue);
-            return std::make_tuple((int16)(red * 255), (int16)(green * 255), (int16)(blue * 255));
+            return std::make_tuple((std::int16_t)(red * 255), (std::int16_t)(green * 255), (std::int16_t)(blue * 255));
         }
         case WorldProperty::SPRITE_SIZE:
             return g_pMultiplayer->GetSpriteSize();
@@ -2128,13 +2128,13 @@ std::variant<bool, float, CLuaMultiReturn<float, float, float>> CLuaWorldDefs::G
             return g_pMultiplayer->GetLightsOnGroundBrightness();
         case WorldProperty::LOW_CLOUDS_COLOR:
         {
-            int16 red, green, blue;
+            std::int16_t red, green, blue;
             g_pMultiplayer->GetLowCloudsColor(red, green, blue);
             return std::make_tuple(red, green, blue);
         }
         case WorldProperty::BOTTOM_CLOUDS_COLOR:
         {
-            int16 red, green, blue;
+            std::int16_t red, green, blue;
             g_pMultiplayer->GetBottomCloudsColor(red, green, blue);
             return std::make_tuple(red, green, blue);
         }
@@ -2173,9 +2173,9 @@ bool CLuaWorldDefs::SetWorldProperty(WorldProperty property, float arg1, std::op
             case WorldProperty::DIRECTIONAL_COLOR:
                 return g_pMultiplayer->SetDirectionalColor(arg1 / 255, arg2.value() / 255, arg3.value() / 255);
             case WorldProperty::LOW_CLOUDS_COLOR:
-                return g_pMultiplayer->SetLowCloudsColor((int16)arg1, (int16)arg2.value(), (int16)arg3.value());
+                return g_pMultiplayer->SetLowCloudsColor((std::int16_t)arg1, (std::int16_t)arg2.value(), (std::int16_t)arg3.value());
             case WorldProperty::BOTTOM_CLOUDS_COLOR:
-                return g_pMultiplayer->SetBottomCloudsColor((int16)arg1, (int16)arg2.value(), (int16)arg3.value());
+                return g_pMultiplayer->SetBottomCloudsColor((std::int16_t)arg1, (std::int16_t)arg2.value(), (std::int16_t)arg3.value());
         }
         return false;
     }

@@ -21,7 +21,7 @@ extern CCoreInterface* g_pCore;
 // count: 26316 in unmodified game
 CStreamingInfo (&CStreamingSA::ms_aInfoForModel)[26316] = *(CStreamingInfo(*)[26316])0x8E4CC0;
 HANDLE* phStreamingThread = (HANDLE*)0x8E4008;
-uint32(&CStreamingSA::ms_streamingHalfOfBufferSizeBlocks) = *(uint32*)0x8E4CA8;
+std::uint32_t(&CStreamingSA::ms_streamingHalfOfBufferSizeBlocks) = *(std::uint32_t*)0x8E4CA8;
 void* (&CStreamingSA::ms_pStreamingBuffer)[2] = *(void* (*)[2])0x8E4CAC;
 
 namespace
@@ -429,10 +429,10 @@ void CStreamingSA::RemoveArchive(unsigned char ucArchiveID)
     m_StreamHandles[uiStreamHandlerID] = NULL;
 }
 
-bool CStreamingSA::SetStreamingBufferSize(uint32 numBlocks)
+bool CStreamingSA::SetStreamingBufferSize(std::uint32_t numBlocks)
 {
     numBlocks += numBlocks % 2; // Make sure number is even by "rounding" it upwards. [Otherwise it can't be split in half properly]
-    
+
     // Check if the size is the same already
     if (numBlocks == ms_streamingHalfOfBufferSizeBlocks * 2)
         return true;
@@ -442,7 +442,7 @@ bool CStreamingSA::SetStreamingBufferSize(uint32 numBlocks)
 
     // First of all, allocate the new buffer
     // NOTE: Due to a bug in the `MallocAlign` code the function will just *crash* instead of returning nullptr on alloc. failure :D
-    typedef void*(__cdecl * Function_CMemoryMgr_MallocAlign)(uint32 uiCount, uint32 uiAlign);
+    typedef void*(__cdecl * Function_CMemoryMgr_MallocAlign)(std::uint32_t uiCount, std::uint32_t uiAlign);
     void* pNewBuffer = ((Function_CMemoryMgr_MallocAlign)(0x72F4C0))(numBlocks * 2048, 2048);
     if (!pNewBuffer) // ...so this code is useless for now
         return false;

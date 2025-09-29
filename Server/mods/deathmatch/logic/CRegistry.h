@@ -153,7 +153,7 @@ struct CRegistryResultData
     int                           nRows;
     int                           nColumns;
     uint                          uiNumAffectedRows;
-    uint64                        ullLastInsertId;
+    std::uint64_t                        ullLastInsertId;
     CRegistryResultData*          pNextResult;
 
     CRegistryResultData*    GetThis() { return this; }

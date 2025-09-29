@@ -696,7 +696,7 @@ bool IsMatrixValid(RwMatrix* pMatrix)
 
 bool AreMatricesOfRpAtomicValid(RpAtomic* pAtomic)
 {
-    uint32 atomicSkinOffset = *(uint32*)0xC978A4;
+    std::uint32_t atomicSkinOffset = *(std::uint32_t*)0xC978A4;
     RpHAnimHierarchy* pSkinPluginData = *(RpHAnimHierarchy**)((char*)pAtomic + atomicSkinOffset);
 
     if (!pSkinPluginData)
@@ -725,17 +725,17 @@ static void __declspec(naked) HOOK_CVisibilityPlugins_RenderPedCB()
         push esi;
         push edi;
         mov edi, [esp + 0Ch]; // RpAtomic
-        
+
         push edi;
         call AreMatricesOfRpAtomicValid;
         add esp, 4;
-        
+
         test al, al;
         jz skipRender;
-        
+
         push 0x7335B6; // Continue rendering
         retn;
-        
+
     skipRender:
         pop edi;
         pop esi;

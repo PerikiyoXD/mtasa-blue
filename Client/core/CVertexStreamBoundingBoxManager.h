@@ -23,21 +23,21 @@ class CRangeBoundsMap
         CBox box;
     };
 
-    std::map<uint64, SItem> itemMap;
+    std::map<std::uint64_t, SItem> itemMap;
 
-    uint64 MakeKey(uint64 uiStart, uint64 uiLength) const { return uiStart << 32 | uiLength; }
+    std::uint64_t MakeKey(std::uint64_t uiStart, std::uint64_t uiLength) const { return uiStart << 32 | uiLength; }
 
 public:
     void SetRange(const uint uiStart, const uint uiLength, const CBox& boundingBox)
     {
-        const uint64 key = MakeKey(uiStart, uiLength);
+        const std::uint64_t key = MakeKey(uiStart, uiLength);
         SItem        item = {uiStart, uiLength, boundingBox};
         MapSet(itemMap, key, item);
     }
 
     bool IsRangeSet(const uint uiStart, const uint uiLength, CBox& outBoundingBox) const
     {
-        const uint64 key = MakeKey(uiStart, uiLength);
+        const std::uint64_t key = MakeKey(uiStart, uiLength);
         if (const SItem* pItem = MapFind(itemMap, key))
         {
             outBoundingBox = pItem->box;
@@ -48,7 +48,7 @@ public:
 
     void UnsetRange(const uint uiStart, const uint uiLength)
     {
-        for (std::map<uint64, SItem>::iterator iter = itemMap.begin(); iter != itemMap.end();)
+        for (std::map<std::uint64_t, SItem>::iterator iter = itemMap.begin(); iter != itemMap.end();)
         {
             const SItem& item = iter->second;
 

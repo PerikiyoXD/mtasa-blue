@@ -10,7 +10,7 @@
 
 #pragma once
 
-enum EServerInfoSyncFlag : uint8
+enum EServerInfoSyncFlag : std::uint8_t
 {
     SERVER_INFO_FLAG_ALL = 0xFF,                  // 0b11111111
     SERVER_INFO_FLAG_MAX_PLAYERS = 1,             // 0b00000001

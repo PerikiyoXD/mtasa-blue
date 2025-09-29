@@ -1,0 +1,7 @@
+target("CEF Launcher")
+	set_kind("binary")
+	set_basename("CEFLauncher")
+	set_targetdir("$(projectdir)/Bin/mta/cef")
+	add_files("Main.cpp", "CEFLauncher.manifest")
+	add_deps("Client SDK")
+target_end()

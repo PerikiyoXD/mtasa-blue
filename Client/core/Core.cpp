@@ -15,7 +15,7 @@
 #include "profiler/SharedUtil.Profiler.h"
 #define UTF8_FILE_HOOKS_PERSONALITY_Core
 #include "SharedUtil.Win32Utf8FileHooks.hpp"
-#include "SharedUtil.Memory.h"
+#include "Memory.h"
 
 #define CORE_API extern "C" __declspec(dllexport)
 

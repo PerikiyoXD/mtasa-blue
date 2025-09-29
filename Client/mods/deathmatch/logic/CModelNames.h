@@ -19,19 +19,19 @@
 class CModelNames
 {
 public:
-    static uint32      GetModelID(const SString& strName);
-    static uint32      GetClothesTexID(const SString& strName);
-    static const char* GetModelName(uint32 usModelID);
-    static uint32      ResolveModelID(const SString& strModelNameOrNumber);
-    static uint32      ResolveClothesTexID(const SString& strTexNameOrNumber);
+    static std::uint32_t      GetModelID(const SString& strName);
+    static std::uint32_t      GetClothesTexID(const SString& strName);
+    static const char* GetModelName(std::uint32_t usModelID);
+    static std::uint32_t      ResolveModelID(const SString& strModelNameOrNumber);
+    static std::uint32_t      ResolveClothesTexID(const SString& strTexNameOrNumber);
 
 protected:
     static void InitializeMaps();
 
-    static std::map<uint32, const char*> ms_ModelIDNameMap;
-    static std::map<SString, uint32>     ms_NameModelIDMap;
-    static std::map<uint32, const char*> ms_ClothesModelIDNameMap;
-    static std::map<SString, uint32>     ms_NameClothesModelIDMap;
-    static std::map<uint32, const char*> ms_ClothesTexIDNameMap;
-    static std::map<SString, uint32>     ms_NameClothesTexIDMap;
+    static std::map<std::uint32_t, const char*> ms_ModelIDNameMap;
+    static std::map<SString, std::uint32_t>     ms_NameModelIDMap;
+    static std::map<std::uint32_t, const char*> ms_ClothesModelIDNameMap;
+    static std::map<SString, std::uint32_t>     ms_NameClothesModelIDMap;
+    static std::map<std::uint32_t, const char*> ms_ClothesTexIDNameMap;
+    static std::map<SString, std::uint32_t>     ms_NameClothesTexIDMap;
 };

@@ -53,7 +53,7 @@ namespace mta::memory
         const std::uint32_t size_u32 = static_cast<std::uint32_t>(size);
         const std::uint32_t align_u32 = static_cast<std::uint32_t>(alignment);
 
-        // Validate that casting to uint32 didn't truncate the values (x86 safety)
+        // Validate that casting to std::uint32_t didn't truncate the values (x86 safety)
         if (static_cast<std::size_t>(size_u32) != size || static_cast<std::size_t>(align_u32) != alignment)
         {
             return nullptr;
@@ -132,7 +132,7 @@ namespace mta::memory
         const std::uint32_t size_u32 = static_cast<std::uint32_t>(size);
         const std::uint32_t align_u32 = static_cast<std::uint32_t>(alignment);
 
-        // Validate that casting to uint32 didn't truncate the values
+        // Validate that casting to std::uint32_t didn't truncate the values
         if (static_cast<std::size_t>(size_u32) != size || static_cast<std::size_t>(align_u32) != alignment)
         {
             return nullptr;

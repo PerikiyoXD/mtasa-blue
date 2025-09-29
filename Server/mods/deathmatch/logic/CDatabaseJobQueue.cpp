@@ -12,7 +12,7 @@
 #include "StdInc.h"
 #include "CDatabaseType.h"
 #include "CDatabaseJobQueue.h"
-#include "SharedUtil.Thread.h"
+#include "Thread.h"
 #include "CDatabaseManager.h"
 #include "CPerfStatModule.h"
 #include "CLogger.h"

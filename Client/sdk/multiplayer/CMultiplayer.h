@@ -115,7 +115,7 @@ typedef bool(BlendAnimationHierarchyHandler)(CAnimBlendAssociationSAInterface* p
                                              RpClump* pClump);
 typedef bool(ProcessCollisionHandler)(class CEntitySAInterface* pThisInterface, class CEntitySAInterface* pOtherInterface);
 typedef bool(VehicleCollisionHandler)(class CVehicleSAInterface*& pCollidingVehicle, class CEntitySAInterface* pCollidedVehicle, int iModelIndex,
-                                      float fDamageImpulseMag, float fCollidingDamageImpulseMag, uint16 usPieceType, CVector vecCollisionPos,
+                                      float fDamageImpulseMag, float fCollidingDamageImpulseMag, std::uint16_t usPieceType, CVector vecCollisionPos,
                                       CVector vecCollisionVelocity, bool isProjectile);
 typedef bool(VehicleDamageHandler)(CEntitySAInterface* pVehicle, float fLoss, CEntitySAInterface* pAttacker, eWeaponType weaponType,
                                    const CVector& vecDamagePos, uchar ucTyre);
@@ -331,12 +331,12 @@ public:
     virtual bool  SetSpriteBrightness(float brightness) = 0;
     virtual bool  ResetSpriteBrightness() = 0;
 
-    virtual int16 GetPoleShadowStrength() const = 0;
-    virtual bool  SetPoleShadowStrength(int16 strength) = 0;
+    virtual std::int16_t GetPoleShadowStrength() const = 0;
+    virtual bool  SetPoleShadowStrength(std::int16_t strength) = 0;
     virtual bool  ResetPoleShadowStrength() = 0;
 
-    virtual int16 GetShadowStrength() const = 0;
-    virtual bool  SetShadowStrength(int16 strength) = 0;
+    virtual std::int16_t GetShadowStrength() const = 0;
+    virtual bool  SetShadowStrength(std::int16_t strength) = 0;
     virtual bool  ResetShadowStrength() = 0;
 
     virtual float GetShadowsOffset() const = 0;
@@ -347,12 +347,12 @@ public:
     virtual bool  SetLightsOnGroundBrightness(float brightness) = 0;
     virtual bool  ResetLightsOnGroundBrightness() = 0;
 
-    virtual void  GetLowCloudsColor(int16& red, int16& green, int16& blue) const = 0;
-    virtual bool  SetLowCloudsColor(int16 red, int16 green, int16 blue) = 0;
+    virtual void  GetLowCloudsColor(std::int16_t& red, std::int16_t& green, std::int16_t& blue) const = 0;
+    virtual bool  SetLowCloudsColor(std::int16_t red, std::int16_t green, std::int16_t blue) = 0;
     virtual bool  ResetLowCloudsColor() = 0;
 
-    virtual void  GetBottomCloudsColor(int16& red, int16& green, int16& blue) const = 0;
-    virtual bool  SetBottomCloudsColor(int16 red, int16 green, int16 blue) = 0;
+    virtual void  GetBottomCloudsColor(std::int16_t& red, std::int16_t& green, std::int16_t& blue) const = 0;
+    virtual bool  SetBottomCloudsColor(std::int16_t red, std::int16_t green, std::int16_t blue) = 0;
     virtual bool  ResetBottomCloudsColor() = 0;
 
     virtual float GetCloudsAlpha1() const = 0;

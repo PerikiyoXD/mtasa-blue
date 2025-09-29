@@ -222,12 +222,12 @@ public:
     bool  SetSpriteBrightness(float brightness);
     bool  ResetSpriteBrightness();
 
-    int16 GetPoleShadowStrength() const;
-    bool  SetPoleShadowStrength(int16 strength);
+    std::int16_t GetPoleShadowStrength() const;
+    bool  SetPoleShadowStrength(std::int16_t strength);
     bool  ResetPoleShadowStrength();
 
-    int16 GetShadowStrength() const;
-    bool  SetShadowStrength(int16 strength);
+    std::int16_t GetShadowStrength() const;
+    bool  SetShadowStrength(std::int16_t strength);
     bool  ResetShadowStrength();
 
     float GetShadowsOffset() const;
@@ -238,12 +238,12 @@ public:
     bool  SetLightsOnGroundBrightness(float brightness);
     bool  ResetLightsOnGroundBrightness();
 
-    void  GetLowCloudsColor(int16& red, int16& green, int16& blue) const;
-    bool  SetLowCloudsColor(int16 red, int16 green, int16 blue);
+    void  GetLowCloudsColor(std::int16_t& red, std::int16_t& green, std::int16_t& blue) const;
+    bool  SetLowCloudsColor(std::int16_t red, std::int16_t green, std::int16_t blue);
     bool  ResetLowCloudsColor();
 
-    void  GetBottomCloudsColor(int16& red, int16& green, int16& blue) const;
-    bool  SetBottomCloudsColor(int16 red, int16 green, int16 blue);
+    void  GetBottomCloudsColor(std::int16_t& red, std::int16_t& green, std::int16_t& blue) const;
+    bool  SetBottomCloudsColor(std::int16_t red, std::int16_t green, std::int16_t blue);
     bool  ResetBottomCloudsColor();
 
     float GetCloudsAlpha1() const;

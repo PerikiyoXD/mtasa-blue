@@ -1467,22 +1467,22 @@ static void __declspec(naked) HOOK_CWorld_RemoveFallenCars()
 
 void CMultiplayerSA::SetPedTargetingMarkerEnabled(bool bEnable)
 {
-    static const uint8 original = 0x83;
-    uint32             dwFunc = FUNC_CPed__RenderTargetMarker;
+    static const std::uint8_t original = 0x83;
+    std::uint32_t             dwFunc = FUNC_CPed__RenderTargetMarker;
     if (bEnable)
     {
-        MemPut<uint8>(dwFunc, original);
+        MemPut<std::uint8_t>(dwFunc, original);
     }
     else
     {
-        MemPut<uint8>(dwFunc, 0xC3);
+        MemPut<std::uint8_t>(dwFunc, 0xC3);
     }
 }
 
 bool CMultiplayerSA::IsPedTargetingMarkerEnabled()
 {
-    uint32 dwFunc = FUNC_CPed__RenderTargetMarker;
-    return *(uint8*)dwFunc != 0xC3;
+    std::uint32_t dwFunc = FUNC_CPed__RenderTargetMarker;
+    return *(std::uint8_t*)dwFunc != 0xC3;
 }
 
 CBaseModelInfoSAInterface* pLoadingModelInfo = 0;

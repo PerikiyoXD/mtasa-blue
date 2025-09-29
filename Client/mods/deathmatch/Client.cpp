@@ -10,7 +10,7 @@
  *****************************************************************************/
 
 #include "StdInc.h"
-#include "SharedUtil.Memory.h"
+#include "Memory.h"
 
 CClient* g_pClient = NULL;
 

@@ -14,7 +14,7 @@
 #include "CVersionUpdater.Util.hpp"
 #include "CNewsBrowser.h"
 #include "CFilePathTranslator.h"
-#include "SharedUtil.Thread.h"
+#include "Thread.h"
 #include <charconv>
 
 ///////////////////////////////////////////////////////////////

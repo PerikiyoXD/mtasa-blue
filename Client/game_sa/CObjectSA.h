@@ -30,19 +30,19 @@ public:
     float   fBuoyancy;                           // 16
     float   fUprootLimit;                        // 20
     float   fColDamageMultiplier;                // 24
-    uint8   ucColDamageEffect;                   // 28
-    uint8   ucSpecialColResponseCase;            // 29
-    uint8   ucCameraAvoidObject;                 // 30
-    uint8   ucCausesExplosion;                   // 31
-    uint8   ucFxType;                            // 32
-    uint8   pad1[3];                             // 33
+    std::uint8_t   ucColDamageEffect;                   // 28
+    std::uint8_t   ucSpecialColResponseCase;            // 29
+    std::uint8_t   ucCameraAvoidObject;                 // 30
+    std::uint8_t   ucCausesExplosion;                   // 31
+    std::uint8_t   ucFxType;                            // 32
+    std::uint8_t   pad1[3];                             // 33
     CVector vecFxOffset;                         // 36
     void*   pFxSystem;                           // ret from CParticleData::GetDataFromName // 48
     float   fSmashMultiplier;                    // 52
     CVector vecBreakVelocity;                    // 56
     float   fBreakVelocityRand;                  // 68
-    uint32  uiGunBreakMode;                      // 72
-    uint32  uiSparksOnImpact;                    // 76
+    std::uint32_t  uiGunBreakMode;                      // 72
+    std::uint32_t  uiSparksOnImpact;                    // 76
 };
 // TODO: Find out correct size
 // static_assert(sizeof(CObjectInfo) == 0x50, "Invalid size for CObjectInfo");
@@ -51,70 +51,70 @@ class CObjectSAInterface : public CPhysicalSAInterface
 {
 public:
     void*  pObjectList;            // 312
-    uint8  pad1;                   // 316
-    uint8  pad2;                   // 317
-    uint16 pad3;                   // 318
+    std::uint8_t  pad1;                   // 316
+    std::uint8_t  pad2;                   // 317
+    std::uint16_t pad3;                   // 318
 
     // flags
-    uint32 b0x01 : 1;            // 320
-    uint32 b0x02 : 1;
-    uint32 b0x04 : 1;
-    uint32 b0x08 : 1;
-    uint32 b0x10 : 1;
-    uint32 b0x20 : 1;
-    uint32 bExploded : 1;
-    uint32 b0x80 : 1;
+    std::uint32_t b0x01 : 1;            // 320
+    std::uint32_t b0x02 : 1;
+    std::uint32_t b0x04 : 1;
+    std::uint32_t b0x08 : 1;
+    std::uint32_t b0x10 : 1;
+    std::uint32_t b0x20 : 1;
+    std::uint32_t bExploded : 1;
+    std::uint32_t b0x80 : 1;
 
-    uint32 b0x100 : 1;            // 321
-    uint32 b0x200 : 1;
-    uint32 b0x400 : 1;
-    uint32 bIsTrainNearCrossing : 1;            // Train crossing will be opened if flag is set (distance < 120.0f)
-    uint32 b0x1000 : 1;
-    uint32 b0x2000 : 1;
-    uint32 bIsDoorMoving : 1;
-    uint32 bIsDoorOpen : 1;
+    std::uint32_t b0x100 : 1;            // 321
+    std::uint32_t b0x200 : 1;
+    std::uint32_t b0x400 : 1;
+    std::uint32_t bIsTrainNearCrossing : 1;            // Train crossing will be opened if flag is set (distance < 120.0f)
+    std::uint32_t b0x1000 : 1;
+    std::uint32_t b0x2000 : 1;
+    std::uint32_t bIsDoorMoving : 1;
+    std::uint32_t bIsDoorOpen : 1;
 
-    uint32 b0x10000 : 1;            // 322
-    uint32 bUpdateScale : 1;
-    uint32 b0x40000 : 1;
-    uint32 b0x80000 : 1;
-    uint32 b0x100000 : 1;
-    uint32 b0x200000 : 1;
-    uint32 b0x400000 : 1;
-    uint32 b0x800000 : 1;
+    std::uint32_t b0x10000 : 1;            // 322
+    std::uint32_t bUpdateScale : 1;
+    std::uint32_t b0x40000 : 1;
+    std::uint32_t b0x80000 : 1;
+    std::uint32_t b0x100000 : 1;
+    std::uint32_t b0x200000 : 1;
+    std::uint32_t b0x400000 : 1;
+    std::uint32_t b0x800000 : 1;
 
-    uint32 b0x1000000 : 1;            // 323
-    uint32 b0x2000000 : 1;
-    uint32 b0x4000000 : 1;
-    uint32 b0x8000000 : 1;
-    uint32 b0x10000000 : 1;
-    uint32 b0x20000000 : 1;
-    uint32 b0x40000000 : 1;
-    uint32 b0x80000000 : 1;
+    std::uint32_t b0x1000000 : 1;            // 323
+    std::uint32_t b0x2000000 : 1;
+    std::uint32_t b0x4000000 : 1;
+    std::uint32_t b0x8000000 : 1;
+    std::uint32_t b0x10000000 : 1;
+    std::uint32_t b0x20000000 : 1;
+    std::uint32_t b0x40000000 : 1;
+    std::uint32_t b0x80000000 : 1;
 
-    uint8               ucColDamageEffect;              // 324
-    uint8               pad4;                           // 325
-    uint8               pad5;                           // 326
-    uint8               pad6;                           // 327
-    uint8               pad7;                           // 328
-    uint8               pad8;                           // 329
-    uint16              pad9;                           // 330
-    uint8               pad10;                          // 332
-    uint8               pad11;                          // 333
-    uint8               pad12;                          // 334
-    uint8               pad13;                          // 335
-    uint32              uiObjectRemovalTime;            // 336
+    std::uint8_t               ucColDamageEffect;              // 324
+    std::uint8_t               pad4;                           // 325
+    std::uint8_t               pad5;                           // 326
+    std::uint8_t               pad6;                           // 327
+    std::uint8_t               pad7;                           // 328
+    std::uint8_t               pad8;                           // 329
+    std::uint16_t              pad9;                           // 330
+    std::uint8_t               pad10;                          // 332
+    std::uint8_t               pad11;                          // 333
+    std::uint8_t               pad12;                          // 334
+    std::uint8_t               pad13;                          // 335
+    std::uint32_t              uiObjectRemovalTime;            // 336
     float               fHealth;                        // 340
-    uint32              pad15;                          // 344
+    std::uint32_t              pad15;                          // 344
     float               fScale;                         // 348
     CObjectInfo*        pObjectInfo;                    // 352
     CFireSAInterface*   pFire;                          // 356
-    uint16              pad17;                          // 360
-    uint16              pad18;                          // 362
-    uint32              pad19;                          // 364
+    std::uint16_t              pad17;                          // 360
+    std::uint16_t              pad18;                          // 362
+    std::uint32_t              pad19;                          // 364
     CEntitySAInterface* pLinkedObjectDummy;             // 368  CDummyObject - Is used for dynamic objects like garage doors, train crossings etc.
-    uint32              pad21;                          // 372
-    uint32              pad22;                          // 376
+    std::uint32_t              pad21;                          // 372
+    std::uint32_t              pad22;                          // 376
 };
 static_assert(sizeof(CObjectSAInterface) == 0x17C, "Invalid size for CObjectSAInterface");
 

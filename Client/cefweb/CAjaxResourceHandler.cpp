@@ -42,7 +42,7 @@ void CAjaxResourceHandler::Cancel()
 {
 }
 
-void CAjaxResourceHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, int64& response_length, CefString& redirectUrl)
+void CAjaxResourceHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, std::int64_t& response_length, CefString& redirectUrl)
 {
     response->SetStatus(200);
     response->SetStatusText("OK");

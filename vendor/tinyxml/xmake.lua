@@ -6,7 +6,4 @@ target("tinyxml")
     add_includedirs(".", {public = true})
 
 	add_defines("TIXML_USE_STL")
-
-    add_deps("SharedSDK")
-
 target_end()

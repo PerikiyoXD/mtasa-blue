@@ -42,6 +42,6 @@ private:
 
     std::list<CClientIMG*> m_List;
     bool                   m_bRemoveFromList;
-    uint32                 m_GTALargestFileSizeBlocks;
-    uint32                 m_LargestFileSizeBlocks; // Size of the largest file [in streaming blocks/sectors] in any of the loaded imgs
+    std::uint32_t                 m_GTALargestFileSizeBlocks;
+    std::uint32_t                 m_LargestFileSizeBlocks; // Size of the largest file [in streaming blocks/sectors] in any of the loaded imgs
 };

@@ -40,7 +40,7 @@ CAudioContainerSA::~CAudioContainerSA()
 
 bool CAudioContainerSA::GetAudioData(eAudioLookupIndex lookupIndex, int bankIndex, int audioIndex, void*& pMemory, unsigned int& length)
 {
-    uint8*       rawAudioData = NULL;
+    std::uint8_t*       rawAudioData = NULL;
     unsigned int rawAudioLength;
     int          iSampleRate;
 
@@ -71,7 +71,7 @@ bool CAudioContainerSA::GetAudioData(eAudioLookupIndex lookupIndex, int bankInde
     waveHeader.subchunk2Size = rawAudioLength;
 
     // Allocate a second buffer as we've to insert the wave pcm header at the beginning
-    uint8* buffer = new uint8[sizeof(SRiffWavePCMHeader) + rawAudioLength];
+    std::uint8_t* buffer = new std::uint8_t[sizeof(SRiffWavePCMHeader) + rawAudioLength];
 
     // Copy header and first buffer into the new buffer
     memcpy(buffer, &waveHeader, sizeof(SRiffWavePCMHeader));
@@ -87,7 +87,7 @@ bool CAudioContainerSA::GetAudioData(eAudioLookupIndex lookupIndex, int bankInde
     return true;
 }
 
-bool CAudioContainerSA::GetRawAudioData(eAudioLookupIndex lookupIndex, int bankIndex, int audioIndex, uint8*& dataOut, unsigned int& lengthOut,
+bool CAudioContainerSA::GetRawAudioData(eAudioLookupIndex lookupIndex, int bankIndex, int audioIndex, std::uint8_t*& dataOut, unsigned int& lengthOut,
                                         int& iSampleRateOut)
 {
     int numBanks = m_pLookupTable->CountIndex(lookupIndex);
@@ -135,7 +135,7 @@ bool CAudioContainerSA::GetRawAudioData(eAudioLookupIndex lookupIndex, int bankI
         return false;
 
     // Now we are ready to read the audio data :)
-    uint8* buffer = new uint8[rawLength];
+    std::uint8_t* buffer = new std::uint8_t[rawLength];
 
     dataOut = buffer;
     lengthOut = rawLength;
@@ -204,7 +204,7 @@ bool CAudioContainerSA::ValidateContainer(eAudioLookupIndex lookupIndex)
     archive.seekg(0);
 
     // Count the zeros -> if more than 80% we assume that it has been cut (read 4KB blocks at once)
-    uint8              buffer[VALIDATE_BUFFER_SIZE];
+    std::uint8_t              buffer[VALIDATE_BUFFER_SIZE];
     unsigned long long numZeros = 0;
     while (archive.read(reinterpret_cast<char*>(buffer), VALIDATE_BUFFER_SIZE))
     {
@@ -297,7 +297,7 @@ bool CAudioContainerSA::GetRadioAudioData(eRadioStreamIndex streamIndex, int tra
     if (archive.fail())
         return false;
 
-    uint8* pData = new uint8[iSize];
+    std::uint8_t* pData = new std::uint8_t[iSize];
     ReadRadioArchive(archive, *pData, iSize);
 
     if (archive.fail())

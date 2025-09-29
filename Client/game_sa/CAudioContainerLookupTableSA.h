@@ -22,7 +22,7 @@ public:
     ~CAudioContainerLookupTableSA();
 
     int                  CountIndex(eAudioLookupIndex index);
-    SAudioLookupEntrySA* GetEntry(eAudioLookupIndex lookupIndex, uint8 bankIndex);
+    SAudioLookupEntrySA* GetEntry(eAudioLookupIndex lookupIndex, std::uint8_t bankIndex);
 
 private:
     std::vector<SAudioLookupEntrySA*> m_Entries[9];
@@ -30,9 +30,9 @@ private:
 
 struct SAudioLookupEntrySA
 {
-    uint8  index;
-    uint8  filter[3];
-    uint32 offset;
-    uint32 length;
+    std::uint8_t  index;
+    std::uint8_t  filter[3];
+    std::uint32_t offset;
+    std::uint32_t length;
 };            // size = 12 = 0xC
 static_assert(sizeof(SAudioLookupEntrySA) == 0xC, "Invalid size for SAudioLookupEntrySA");

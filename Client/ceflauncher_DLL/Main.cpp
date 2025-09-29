@@ -13,6 +13,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #undef WIN32_NO_STATUS
+
 #include <ntstatus.h>
 #include <winnt.h>
 #include <winternl.h>

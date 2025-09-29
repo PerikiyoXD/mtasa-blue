@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 #include <StdInc.h>
-#include "SharedUtil.Misc.h"
+#include "Misc.h"
 
 using namespace std;
 

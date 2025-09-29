@@ -30,18 +30,17 @@ distribution.
 #endif
 
 #include "tinyxml.h"
-#include "SharedUtil.h"
 
 bool TiXmlBase::condenseWhiteSpace = true;
 
 // Microsoft compiler security
 FILE* TiXmlFOpen( const char* filename, const char* mode )
 {
-	#if defined(_MSC_VER) && (_MSC_VER >= 1400 )
-		return File::Fopen( filename, mode );
-	#else
+	//#if defined(_MSC_VER) && (_MSC_VER >= 1400 )
+	//	return File::Fopen( filename, mode );
+	//#else
 		return fopen( filename, mode );
-	#endif
+	//#endif
 }
 
 void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )

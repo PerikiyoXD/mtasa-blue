@@ -5558,7 +5558,7 @@ void CPacketHandler::Packet_PedTask(NetBitStreamInterface& bitStream)
 
 void CPacketHandler::Packet_ServerInfoSync(NetBitStreamInterface& bitStream)
 {
-    uint8 flags;
+    std::uint8_t flags;
 
     if (!bitStream.Read(flags))
         return;

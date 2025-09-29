@@ -31,11 +31,11 @@ public:
     CEntitySAInterface* m_pRopeAttacherObject;
     CEntitySAInterface* m_pAttachedEntity;
     float               m_pad5;
-    uint32              m_uiHoldEntityExpireTime;
-    uint8               m_ucSegmentCount;
-    uint8               m_ucRopeType;
-    uint8               m_ucFlags1;
-    uint8               m_ucFlags2;
+    std::uint32_t              m_uiHoldEntityExpireTime;
+    std::uint8_t               m_ucSegmentCount;
+    std::uint8_t               m_ucRopeType;
+    std::uint8_t               m_ucFlags1;
+    std::uint8_t               m_ucFlags2;
 };
 static_assert(sizeof(CRopesSAInterface) == 0x328, "Invalid size for CRopesSAInterface");
 

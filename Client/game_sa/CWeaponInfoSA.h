@@ -30,9 +30,9 @@ public:
     float               fRadius;
     CEntitySAInterface* pInstigator;
     float               fLifeSpan;
-    uint8               ucFlag1;
-    uint8               ucFlag2;
-    uint16              usPad;
+    std::uint8_t               ucFlag1;
+    std::uint8_t               ucFlag2;
+    std::uint16_t              usPad;
 };
 static_assert(sizeof(CFlameShotInfo) == 0x2c, "Invalid size for CFlameShotInfo");
 

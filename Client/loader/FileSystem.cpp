@@ -13,7 +13,8 @@
 #include <limits>
 #include <random>
 #include <sha2.h>
-#include <Windows.h>
+
+#include "OS.h"
 
 static_assert(sizeof(FileHash) == SHA256_DIGEST_SIZE);
 

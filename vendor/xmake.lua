@@ -9,13 +9,13 @@ add_requires("libjpeg v9f", {configs = {shared = false}})
 add_requires("minizip-ng", {alias = "zip", configs = {shared = false}})
 
 -- Windows-only requirements
-if is_plat("windows") then
+if is_client() then
     add_requires("pthreads4w", {alias = "pthreads", configs = {shared = true}})
     add_requires("microsoft-detours", {alias = "detours", configs = {shared = false}})
 end
 
 -- =============================================================================
--- Includes for separate xmake files
+-- Targets
 -- =============================================================================
 
 includes("sparsehash")
@@ -24,94 +24,13 @@ includes("tinygettext")
 includes("tinyxml")
 includes("pcre")
 
--- Windows-only includes
-if is_plat("windows") then
+-- Client Targets
+if is_client() then
+    includes("dxsdk")
     includes("ksignals")
     includes("cef3")
 end
 
--- =============================================================================
--- Vendor Library Targets (without separate xmake files)
--- =============================================================================
-
-
-
--- discord-rpc
-target("discord-rpc")
-    set_kind("static")
-    set_languages("cxx")
-
-    add_includedirs("discord-rpc/discord/include", "discord-rpc/discord/thirdparty/rapidjson/include")
-    add_defines("DISCORD_DISABLE_IO_THREAD")
-    add_files(
-        "discord-rpc/discord/src/discord_rpc.cpp",
-        "discord-rpc/discord/src/rpc_connection.cpp",
-        "discord-rpc/discord/src/serialization.cpp",
-        "discord-rpc/discord/src/connection_win.cpp",
-        "discord-rpc/discord/src/discord_register_win.cpp"
-    )
-    add_headerfiles("discord-rpc/discord/include/*.h")
-
-    -- Only build for Windows x86 (from premake)
-    if not is_plat("windows") or not is_arch("x86") then
-        set_enabled(false)
-    end
-
--- pcre
-target("pcre")
-    set_kind("shared")
-    set_basename("pcre3")
-    set_languages("cxx")
-    set_targetdir("$(projectdir)/Bin/server/mods/deathmatch")
-
-    add_defines("HAVE_CONFIG_H")
-    add_includedirs("pcre")
-    add_files("pcre/*.c", "pcre/*.cc")
-    add_headerfiles("pcre/*.h")
-
--- json-c
-target("json-c")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("json-c/*.c")
-    add_headerfiles("json-c/*.h")
-
--- lua
-target("lua")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("lua/src/*.c")
-    add_headerfiles("lua/src/*.h")
-    -- Remove lua interpreter main
-    remove_files("lua/src/lua.c", "lua/src/luac.c")
-
--- sqlite
-target("sqlite")
-    set_kind("static")
-    set_languages("c")
-
-    add_files("sqlite/*.c")
-    add_headerfiles("sqlite/*.h")
-
--- detours
-target("detours")
-    set_kind("static")
-    set_languages("cxx")
-
-    add_files(
-        "detours/4.0.1/src/creatwth.cpp",
-        "detours/4.0.1/src/detours.cpp",
-        "detours/4.0.1/src/image.cpp",
-        "detours/4.0.1/src/modules.cpp",
-        "detours/4.0.1/src/disolx86.cpp",
-        "detours/4.0.1/src/disolx64.cpp",
-        "detours/4.0.1/src/disasm.cpp"
-    )
-    add_headerfiles("detours/4.0.1/src/*.h")
-    add_includedirs("detours/4.0.1/src")
-    add_defines("WIN32_LEAN_AND_MEAN")
 
 -- CEGUI
 target("CEGUI")
@@ -263,7 +182,7 @@ target("freetype")
 -- ehs (HTTP server library)
 target("ehs")
     set_kind("static")
-    set_languages("cxx17")
+    set_languages("cxx23")
 
     add_files(
         "ehs/datum.cpp",
@@ -284,7 +203,7 @@ target("ehs")
     add_defines("WIN32_LEAN_AND_MEAN", "_LIB")-- glob
 target("glob")
     set_kind("static")
-    set_languages("cxx17")
+    set_languages("cxx23")
 
     add_files("glob/source/*.cpp")
     add_headerfiles("glob/include/*.h")
@@ -419,7 +338,7 @@ target("portaudio")
 -- lunasvg
 target("lunasvg")
     set_kind("static")
-    set_languages("cxx17")  -- lunasvg requires C++17 for std::clamp, std::string_view, etc.
+    set_languages("cxx23")  -- lunasvg requires C++17 for std::clamp, std::string_view, etc.
     set_runtimes("MT")  -- Use static runtime to match main project
 
     add_defines("PLUTOVG_BUILD", "LUNASVG_BUILD", "_CRT_SECURE_NO_WARNINGS")

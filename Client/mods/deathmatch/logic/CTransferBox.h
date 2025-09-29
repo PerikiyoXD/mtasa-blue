@@ -34,7 +34,7 @@ public:
 
     void SetDownloadProgress(uint64_t downloadedSizeTotal);
 
-    void     AddToDownloadTotalSize(uint64 bytes) { m_downloadTotalSize += bytes; }
+    void     AddToDownloadTotalSize(std::uint64_t bytes) { m_downloadTotalSize += bytes; }
     uint64_t GetDownloadTotalSize() const { return m_downloadTotalSize; }
 
     bool SetClientVisibility(bool visible);

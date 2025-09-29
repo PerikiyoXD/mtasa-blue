@@ -16,7 +16,7 @@
 #include "GameExecutablePatcher.h"
 #include "FileGenerator.h"
 #include "FileSystem.h"
-#include "SharedUtil.Memory.h"
+#include "Memory.h"
 
 namespace fs = std::filesystem;
 

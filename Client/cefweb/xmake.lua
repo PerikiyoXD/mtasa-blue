@@ -1,0 +1,7 @@
+target("Client Webbrowser")
+	set_kind("binary")
+	set_basename("cefweb")
+	set_targetdir("$(projectdir)/Bin/mta")
+	add_files("Main.cpp", "CEFLauncher.manifest")
+	add_deps("Client SDK")
+target_end()

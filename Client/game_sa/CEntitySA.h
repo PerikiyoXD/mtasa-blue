@@ -168,7 +168,7 @@ public:
     BYTE nStatus : 5;            // control status       // 54
     //********* END CEntityInfo **********//
 
-    uint8 m_pad0;            // 55
+    std::uint8_t m_pad0;            // 55
 
     CRect*      GetBoundRect_(CRect* pRect);
     void        TransformFromObjectSpace(CVector& outPosn, CVector const& offset);

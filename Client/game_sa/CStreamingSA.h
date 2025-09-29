@@ -67,14 +67,14 @@ public:
     void ReinitStreaming();
     void RemoveBigBuildings() override;
 
-    CStreamingInfo* GetStreamingInfo(uint32 id);
-    void            SetStreamingInfo(uint32 modelid, unsigned char usStreamID, uint uiOffset, ushort usSize, uint uiNextInImg = -1);
+    CStreamingInfo* GetStreamingInfo(std::uint32_t id);
+    void            SetStreamingInfo(std::uint32_t modelid, unsigned char usStreamID, uint uiOffset, ushort usSize, uint uiNextInImg = -1);
     unsigned char   GetUnusedArchive();
     unsigned char   GetUnusedStreamHandle();
     unsigned char   AddArchive(const wchar_t* szFilePath);
     void            RemoveArchive(unsigned char ucStreamHandler);
-    bool            SetStreamingBufferSize(uint32 uiSize);
-    uint32          GetStreamingBufferSize() { return ms_streamingHalfOfBufferSizeBlocks * 2048 * 2; }; // In bytes
+    bool            SetStreamingBufferSize(std::uint32_t uiSize);
+    std::uint32_t          GetStreamingBufferSize() { return ms_streamingHalfOfBufferSizeBlocks * 2048 * 2; }; // In bytes
 
     void          MakeSpaceFor(std::uint32_t memoryToCleanInBytes) override;
     std::uint32_t GetMemoryUsed() const override;
@@ -90,6 +90,6 @@ private:
     std::vector<SStreamName> m_StreamNames;
 
     static void* (&ms_pStreamingBuffer)[2];
-    static uint32(&ms_streamingHalfOfBufferSizeBlocks);
+    static std::uint32_t(&ms_streamingHalfOfBufferSizeBlocks);
     static CStreamingInfo (&ms_aInfoForModel)[26316];            // count: 26316 in unmodified game
 };

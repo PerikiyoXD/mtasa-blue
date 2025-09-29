@@ -18,12 +18,12 @@
 struct tVehicleAudioSettings
 {
     VehicleSoundType m_eVehicleSoundType;
-    int16             m_nEngineOnSoundBankId;
-    int16             m_nEngineOffSoundBankId;
-    int8              m_nBassSetting;            // 0 or 1 or 2
+    std::int16_t             m_nEngineOnSoundBankId;
+    std::int16_t             m_nEngineOffSoundBankId;
+    std::int8_t              m_nBassSetting;            // 0 or 1 or 2
     float             m_fBassEq;
     float             field_C;
-    int8              m_nHornToneSoundInBank;
+    std::int8_t              m_nHornToneSoundInBank;
     float             m_fHornHigh;
     char              m_nDoorSound;
     char              m_EngineUpgrade;

@@ -65,13 +65,13 @@ public:
     virtual void            LoadAllRequestedModels(bool bOnlyPriorityModels = false, const char* szTag = NULL) = 0;
     virtual bool            HasModelLoaded(DWORD dwModelID) = 0;
     virtual void            RequestSpecialModel(DWORD model, const char* szTexture, DWORD channel) = 0;
-    virtual CStreamingInfo* GetStreamingInfo(uint32 id) = 0;
+    virtual CStreamingInfo* GetStreamingInfo(std::uint32_t id) = 0;
     virtual void            ReinitStreaming() = 0;
     virtual unsigned char   AddArchive(const wchar_t *szFilePath) = 0;
     virtual void            RemoveArchive(unsigned char ucArchiveID) = 0;
     virtual void   SetStreamingInfo(unsigned int id, unsigned char usStreamID, unsigned int uiOffset, unsigned short usSize, unsigned int uiNextInImg = -1) = 0;
-    virtual bool   SetStreamingBufferSize(uint32 uiSize) = 0;
-    virtual uint32 GetStreamingBufferSize() = 0;
+    virtual bool   SetStreamingBufferSize(std::uint32_t uiSize) = 0;
+    virtual std::uint32_t GetStreamingBufferSize() = 0;
     virtual void   MakeSpaceFor(std::uint32_t memoryToCleanInBytes) = 0;
     virtual std::uint32_t GetMemoryUsed() const = 0;
     virtual void          RemoveBigBuildings() = 0;

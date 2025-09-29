@@ -1,6 +1,6 @@
 target("sparsehash")
     set_kind("phony")
-    set_languages("cxx17")
+    set_languages("cxx23")
     --add_defines("HASH_NAMESPACE=google", "SPARSEHASH_HASH", "HAVE_CONFIG_H")
 
     -- Only build on Windows x86 (matching premake)

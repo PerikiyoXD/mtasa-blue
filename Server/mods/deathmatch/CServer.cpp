@@ -15,8 +15,8 @@
 #include "CMainConfig.h"
 #define ALLOC_STATS_MODULE_NAME "deathmatch"
 #include "SharedUtil.hpp"
-#include "SharedUtil.Thread.h"
-#include "SharedUtil.IntervalCounter.h"
+#include "Thread.h"
+#include "IntervalCounter.h"
 #include "SharedUtil.IntervalCounter.hpp"
 #if defined(MTA_DEBUG)
     #include "SharedUtil.Tests.hpp"

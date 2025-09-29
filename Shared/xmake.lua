@@ -1,19 +1,3 @@
--- Shared libraries
-
--- XML Library
-target("XML")
-    set_kind("shared")
-    set_basename("xmll")
-    set_targetdir("$(projectdir)/Bin/server")
-
-    add_includedirs("sdk", "../vendor/tinyxml")
-    add_deps("tinyxml")
-    add_defines("TIXML_USE_STL")
-
-    add_files("XML/*.cpp")
-    add_headerfiles("XML/*.h")
-
-    -- Add Shell32 for SHFileOperationW
-    if is_plat("windows") then
-        add_links("Shell32")
-    end
+includes("sdk")
+includes("XML")
+includes("mods/deathmatch/logic")
