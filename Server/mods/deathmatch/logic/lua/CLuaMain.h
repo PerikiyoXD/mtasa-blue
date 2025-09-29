@@ -133,10 +133,10 @@ private:
     CVehicleManager*     m_pVehicleManager;
     CMapManager*         m_pMapManager;
 
-    list<CXMLFile*>                                 m_XMLFiles;
+    std::list<CXMLFile*>                                 m_XMLFiles;
     std::unordered_set<std::unique_ptr<SXMLString>> m_XMLStringNodes;
-    list<CTextDisplay*>                             m_Displays;
-    list<CTextItem*>                                m_TextItems;
+    std::list<CTextDisplay*>                             m_Displays;
+    std::list<CTextItem*>                                m_TextItems;
 
     bool m_bEnableOOP;
 

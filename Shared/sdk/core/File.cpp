@@ -84,7 +84,7 @@ bool SharedUtil::DirectoryExists(const std::string& strPath) noexcept
 
 bool SharedUtil::FileLoad(const SString& strFilename, SString& strBuffer, int iMaxSize, int iOffset)
 {
-    strBuffer = "";
+    strBuffer.clear();
     std::vector<char> buffer;
     if (!FileLoad(strFilename, buffer, iMaxSize, iOffset))
         return false;

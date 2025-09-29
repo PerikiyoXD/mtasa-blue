@@ -20,7 +20,7 @@
 #include <sstream>
 
 #define SHARED_UTIL_WITH_FAST_HASH_MAP
-#include <SharedUtil.h>
+#include <core/SharedUtil.h>
 #include <MTAPlatform.h>
 
 #ifdef WIN32

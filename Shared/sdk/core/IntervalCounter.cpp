@@ -10,6 +10,7 @@
 #include "IntervalCounter.h"
 
 #include "IntTypes.h"
+#include "SharedTime.h"
 
 #include "OS.h"
 

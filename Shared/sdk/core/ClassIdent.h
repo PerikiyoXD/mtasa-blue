@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cassert>
 #include "IntTypes.h"
 
 namespace SharedUtil

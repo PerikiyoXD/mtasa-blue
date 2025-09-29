@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "core/IntTypes.h"
-#include "core/Defines.h"
-#include "core/AllocTracking.h"
+#include "IntTypes.h"
+#include "Defines.h"
+#include "AllocTracking.h"
 
 #include <cassert>
 #include <list>
@@ -32,39 +32,39 @@
     #define _            // Use a dummy localisation define for modules that don't need it
 #endif
 
-#include "core/SString.h"
-#include "core/WString.h"
+#include "SString.h"
+#include "WString.h"
 
 #define _E(code) SString(" [%s]", code)
 
-#include "core/Legacy.h"
-#include "core/Map.h"
+#include "Legacy.h"
+#include "Map.h"
 #if defined(SHARED_UTIL_WITH_HASH_MAP) || defined(SHARED_UTIL_WITH_FAST_HASH_MAP)
-    #include "core/HashMap.h"
+    #include "HashMap.h"
 #endif
 #if defined(SHARED_UTIL_WITH_FAST_HASH_MAP)
-    #include "core/FastHashMap.h"
-    #include "core/FastHashSet.h"
+    #include "FastHashMap.h"
+    #include "FastHashSet.h"
 #endif
-#include "core/Misc.h"
-#include "core/File.h"
-#include "core/SharedTime.h"
-#include "core/Buffer.h"
-#include "core/Game.h"
-#include "core/SharedMath.h"
-#include "core/ClassIdent.h"
-#include "core/Hash.h"
-#include "core/Crypto.h"
+#include "Misc.h"
+#include "File.h"
+#include "SharedTime.h"
+#include "Buffer.h"
+#include "Game.h"
+#include "SharedMath.h"
+#include "ClassIdent.h"
+#include "Hash.h"
+#include "Crypto.h"
 #if defined(SHARED_UTIL_WITH_SYS_INFO)
     #include "SysInfo.h"
 #endif
-#include "core/Profiling.h"
-#include "core/Logging.h"
-#include "core/AsyncTaskScheduler.h"
-#include "core/ThreadPool.h"
-#include "core/CMtaVersion.h"
-#include "core/CFastList.h"
-#include "core/CDuplicateLineFilter.h"
+#include "Profiling.h"
+#include "Logging.h"
+#include "AsyncTaskScheduler.hpp"
+#include "ThreadPool.h"
+#include "CMtaVersion.h"
+#include "CFastList.h"
+#include "CDuplicateLineFilter.h"
 
 #ifdef _MSC_VER
     #define snprintf _snprintf

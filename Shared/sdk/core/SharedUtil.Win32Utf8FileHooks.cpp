@@ -10,7 +10,11 @@
  *****************************************************************************/
 
 #include <shlobj.h>
-#include <detours.h>
+#include <cassert>
+#include "detours.h"
+#include "File.h"
+#include "SString.h"
+#include "Defines.h"
 
 /*
 The hooks in this file modify the following functions to work correctly with utf8 strings:
@@ -292,6 +296,12 @@ namespace SharedUtil
         return GetModuleHandleW(FromUTF8(lpModuleName));
     }
 
+#define ADDHOOK(module, name) \
+    static_assert(std::is_same_v<decltype(pfn##name), decltype(&name)>, "invalid type of " MTA_STR(pfn##name)); \
+    pfn##name = reinterpret_cast<decltype(pfn##name)>(DetourFindFunction(module, #name)); \
+    DetourAttach(&reinterpret_cast<PVOID&>(pfn##name), My##name); \
+    assert(pfn##name);
+
     /////////////////////////////////////////////////////////////
     //
     // Hook adding
@@ -299,11 +309,7 @@ namespace SharedUtil
     /////////////////////////////////////////////////////////////
     void AddUtf8FileHooks()
     {
-#define ADDHOOK(module, name) \
-    static_assert(std::is_same_v<decltype(pfn##name), decltype(&name)>, "invalid type of " MTA_STR(pfn##name)); \
-    pfn##name = reinterpret_cast<decltype(pfn##name)>(DetourFindFunction(module, #name)); \
-    DetourAttach(&reinterpret_cast<PVOID&>(pfn##name), My##name); \
-    assert(pfn##name);
+
 
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
@@ -328,6 +334,8 @@ namespace SharedUtil
 
         DetourTransactionCommit();
     }
+
+#undef ADDHOOK
 
     /////////////////////////////////////////////////////////////
     //

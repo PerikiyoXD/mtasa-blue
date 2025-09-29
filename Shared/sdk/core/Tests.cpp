@@ -8,10 +8,20 @@
  *****************************************************************************/
 
 #include "ClassIdent.h"
+#include "Crypto.h"
+#include "Defines.h"
 #include "File.h"
+#include "Hash.h"
+#include "Misc.h"
 #include "SString.h"
 
+#include "Crypto.hpp"
+#include "cryptopp/md5.h"
+
+#include <cassert>
 #include <map>
+
+using namespace SharedUtil;
 
 // Fwd decl
 void SString_Tests();

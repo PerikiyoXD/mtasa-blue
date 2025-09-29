@@ -918,7 +918,7 @@ std::optional<std::string> CLuaFileDefs::fileGetHash(lua_State* const luaVM, CSc
         switch (hashFunction)
         {
             case HashFunctionType::MD5:
-                result = ComputeScriptFileHash<CryptoPP::Weak::MD5>(scriptFile);
+                result = ComputeScriptFileHash<CryptoPP::MD5>(scriptFile);
                 break;
             case HashFunctionType::SHA1:
                 result = ComputeScriptFileHash<CryptoPP::SHA1>(scriptFile);
@@ -951,11 +951,11 @@ std::optional<std::string> CLuaFileDefs::fileGetHash(lua_State* const luaVM, CSc
 
                 if (algorithm.empty() || !StringToEnum(algorithm, hmacAlgorithm))
                     throw std::invalid_argument("Invalid value for field 'algorithm'");
-                
+
                 switch (hmacAlgorithm)
                 {
                     case HmacAlgorithm::MD5:
-                        result = ComputeScriptFileHash<CryptoPP::HMAC<CryptoPP::Weak::MD5>>(scriptFile, key);
+                        result = ComputeScriptFileHash<CryptoPP::HMAC<CryptoPP::MD5>>(scriptFile, key);
                         break;
                     case HmacAlgorithm::SHA1:
                         result = ComputeScriptFileHash<CryptoPP::HMAC<CryptoPP::SHA1>>(scriptFile, key);

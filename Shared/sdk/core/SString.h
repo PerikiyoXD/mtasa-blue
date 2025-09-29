@@ -10,6 +10,10 @@
 #pragma once
 
 #include <string>
+#include <cstdarg>
+#include <vector>
+
+#include "IntTypes.h"
 
 #ifdef WIN32
     #ifndef va_copy

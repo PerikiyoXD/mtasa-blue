@@ -15,5 +15,5 @@ target("Dbconmy")
     add_files("*.cpp")
     add_includedirs(".")
 
-    add_deps("Shared SDK", "Server SDK", "google-breakpad", "sparsehash")
+    add_deps("Shared SDK Core", "Server SDK", "google-breakpad", "sparsehash")
 target_end()

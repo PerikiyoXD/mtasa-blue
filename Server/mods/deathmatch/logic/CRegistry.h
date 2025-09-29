@@ -11,13 +11,16 @@
 
 #pragma once
 
-#include "CLogger.h"
 #include <list>
 #include <vector>
 #include <string>
 #include <sqlite/sqlite3.h>
 
-typedef CAutoRefedPointer<struct CRegistryResultData> CRegistryResult;
+#include "Misc.h"
+
+using namespace SharedUtil;
+
+using CRegistryResult = SharedUtil::CAutoRefedPointer<struct CRegistryResultData>;
 
 class CRegistry
 {

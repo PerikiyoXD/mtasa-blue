@@ -417,3 +417,5 @@ utils/DXFiles/
 !*.exe
 utils/vswhere.exe
 *.generated.h
+
+.cache/

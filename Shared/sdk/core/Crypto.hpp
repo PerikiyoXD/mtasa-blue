@@ -9,22 +9,31 @@
 
 #pragma once
 
+#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #include <cryptopp/filters.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/hmac.h>
-#include "SharedUtil.Crypto.h"
+#include <cryptopp/md5.h>
+#include <cryptopp/sha.h>
+#include <cryptopp/sha3.h>
+#include <cryptopp/stdcpp.h>
+
+#include "SString.h"
+
+#include <string>
 
 namespace SharedUtil
 {
     template <class HashType>
     SString Hash(const SString& value)
     {
-        SString  result;
-        HashType hashType{};
+        std::string result;
+        HashType    hashType{};
 
         CryptoPP::StringSource ss(value, true, new CryptoPP::HashFilter(hashType, new CryptoPP::HexEncoder(new CryptoPP::StringSink(result))));
 
-        return result;
+        SString sResult = result.c_str();
+        return sResult;
     }
 
     template <class HmacType>
@@ -41,4 +50,4 @@ namespace SharedUtil
         return result;
     }
 
-}  // namespace SharedUtil
+}            // namespace SharedUtil

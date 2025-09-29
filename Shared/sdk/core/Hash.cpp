@@ -7,11 +7,13 @@
  *
  *****************************************************************************/
 
-#include <random>
 #include <algorithm>
 
 #include "Hash.h"
 #include "File.h"
+
+#include "cryptopp/sha.h"
+#include "cryptopp/md5.h"
 
 namespace bcrypt
 {
@@ -576,7 +578,9 @@ namespace SharedUtil
 
     void GenerateSha256(const void* pData, uint uiLength, uchar output[32])
     {
-        sha256((const uchar*)pData, uiLength, output);
+        CryptoPP::SHA256 hash;
+        hash.Update((const CryptoPP::byte*)pData, uiLength);
+        hash.Final(output);
     }
 
     SString GenerateSha256HexString(const void* pData, uint uiLength)
@@ -600,36 +604,50 @@ namespace SharedUtil
         {
             case EHashFunction::MD5:
             {
-                return CMD5Hasher::CalculateHexString(pData, uiLength);
+                uchar         output[16];
+                CryptoPP::MD5 hash;
+                hash.Update((const CryptoPP::byte*)pData, uiLength);
+                hash.Final(output);
+                return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA1:
             {
-                uchar output[20];
-                sha1((const uchar*)pData, uiLength, output);
+                uchar          output[20];
+                CryptoPP::SHA1 hash;
+                hash.Update((const CryptoPP::byte*)pData, uiLength);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA224:
             {
-                uchar output[SHA224_DIGEST_SIZE];
-                sha224((const uchar*)pData, uiLength, output);
+                uchar            output[28];
+                CryptoPP::SHA224 hash;
+                hash.Update((const CryptoPP::byte*)pData, uiLength);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA256:
             {
-                uchar output[SHA256_DIGEST_SIZE];
-                sha256((const uchar*)pData, uiLength, output);
+                uchar            output[32];
+                CryptoPP::SHA256 hash;
+                hash.Update((const CryptoPP::byte*)pData, uiLength);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA384:
             {
-                uchar output[SHA384_DIGEST_SIZE];
-                sha384((const uchar*)pData, uiLength, output);
+                uchar            output[48];
+                CryptoPP::SHA384 hash;
+                hash.Update((const CryptoPP::byte*)pData, uiLength);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA512:
             {
-                uchar output[SHA512_DIGEST_SIZE];
-                sha512((const uchar*)pData, uiLength, output);
+                uchar            output[64];
+                CryptoPP::SHA512 hash;
+                hash.Update((const CryptoPP::byte*)pData, uiLength);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             default:
@@ -654,63 +672,62 @@ namespace SharedUtil
         {
             case EHashFunction::MD5:
             {
-                CMD5Hasher Hasher;
-                Hasher.Init();
+                CryptoPP::MD5  hash;
+                CryptoPP::byte output[16];
+                hash.Update((const CryptoPP::byte*)buf, 0);
                 for (size_t n; (n = fread(buf, 1, std::min<uint>(sizeof(buf), uiMaxSize), fh)) > 0; uiMaxSize -= n)
-                    Hasher.Update(buf, n);
-                Hasher.Finalize();
-                return ConvertDataToHexString(Hasher.GetResult(), 16);
+                    hash.Update((const CryptoPP::byte*)buf, n);
+                hash.Final(output);
+                return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA1:
             {
-                sha1_context ctx;
-                sha1_init(&ctx);
-                sha1_starts(&ctx);
+                CryptoPP::SHA1 hash;
+                CryptoPP::byte output[20];
+                hash.Update((const CryptoPP::byte*)buf, 0);
                 for (size_t n; (n = fread(buf, 1, std::min<uint>(sizeof(buf), uiMaxSize), fh)) > 0; uiMaxSize -= n)
-                    sha1_update(&ctx, buf, n);
-                uchar output[20];
-                sha1_finish(&ctx, output);
-                sha1_free(&ctx);
+                    hash.Update((const CryptoPP::byte*)buf, n);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA224:
             {
-                sha224_ctx ctx;
-                sha224_init(&ctx);
+                CryptoPP::SHA224 hash;
+                CryptoPP::byte   output[28];
+                hash.Update((const CryptoPP::byte*)buf, 0);
                 for (size_t n; (n = fread(buf, 1, std::min<uint>(sizeof(buf), uiMaxSize), fh)) > 0; uiMaxSize -= n)
-                    sha224_update(&ctx, buf, n);
-                uchar output[SHA224_DIGEST_SIZE];
-                sha224_final(&ctx, output);
+                    hash.Update((const CryptoPP::byte*)buf, n);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA256:
             {
-                sha256_ctx ctx;
-                sha256_init(&ctx);
+                CryptoPP::SHA256 hash;
+                CryptoPP::byte   output[32];
+                hash.Update((const CryptoPP::byte*)buf, 0);
                 for (size_t n; (n = fread(buf, 1, std::min<uint>(sizeof(buf), uiMaxSize), fh)) > 0; uiMaxSize -= n)
-                    sha256_update(&ctx, buf, n);
-                uchar output[SHA256_DIGEST_SIZE];
-                sha256_final(&ctx, output);
+                    hash.Update((const CryptoPP::byte*)buf, n);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA384:
             {
-                sha384_ctx ctx;
-                sha384_init(&ctx);
+                CryptoPP::SHA384 hash;
+                CryptoPP::byte   output[48];
+                hash.Update((const CryptoPP::byte*)buf, 0);
                 for (size_t n; (n = fread(buf, 1, std::min<uint>(sizeof(buf), uiMaxSize), fh)) > 0; uiMaxSize -= n)
-                    sha384_update(&ctx, buf, n);
-                uchar output[SHA384_DIGEST_SIZE];
-                sha384_final(&ctx, output);
+                    hash.Update((const CryptoPP::byte*)buf, n);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             case EHashFunction::SHA512:
             {
-                sha512_ctx ctx;
-                sha512_init(&ctx);
+                CryptoPP::SHA512 hash;
+                CryptoPP::byte   output[64];
+                hash.Update((const CryptoPP::byte*)buf, 0);
                 for (size_t n; (n = fread(buf, 1, std::min<uint>(sizeof(buf), uiMaxSize), fh)) > 0; uiMaxSize -= n)
-                    sha512_update(&ctx, buf, n);
-                uchar output[SHA512_DIGEST_SIZE];
-                sha512_final(&ctx, output);
+                    hash.Update((const CryptoPP::byte*)buf, n);
+                hash.Final(output);
                 return ConvertDataToHexString(output, sizeof(output));
             }
             default:

@@ -9,17 +9,7 @@
  *****************************************************************************/
 #pragma once
 
-#include <SharedUtil.IntTypes.h>
-
-#ifdef _WIN32
-    #ifdef MTASA_EXPORT_SHARED_UTIL
-        #define SHARED_UTIL_API __declspec(dllexport)
-    #else
-        #define SHARED_UTIL_API __declspec(dllimport)
-    #endif
-#else
-    #define SHARED_UTIL_API
-#endif
+#include <IntTypes.h>
 
 namespace SharedUtil
 {
@@ -30,11 +20,11 @@ namespace SharedUtil
         DWORD oldProt;
     };
 
-    SHARED_UTIL_API void      SetInitialVirtualProtect();
-    SHARED_UTIL_API bool      IsSlowMem(const void* pAddr, uint uiAmount);
-    SHARED_UTIL_API SMemWrite OpenMemWrite(const void* pAddr, uint uiAmount);
-    SHARED_UTIL_API void      CloseMemWrite(SMemWrite& hMem);
-    SHARED_UTIL_API bool      ismemset(const void* pAddr, int cValue, uint uiAmount);
+    void      SetInitialVirtualProtect();
+    bool      IsSlowMem(const void* pAddr, uint uiAmount);
+    SMemWrite OpenMemWrite(const void* pAddr, uint uiAmount);
+    void      CloseMemWrite(SMemWrite& hMem);
+    bool      ismemset(const void* pAddr, int cValue, uint uiAmount);
 
     bool IsProtectedSlowMem(const void* pAddr);
 

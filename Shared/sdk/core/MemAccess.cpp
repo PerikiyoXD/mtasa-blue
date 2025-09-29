@@ -9,11 +9,26 @@
  *****************************************************************************/
 
 #pragma once
-#include <windows.h>
+
 #include <cassert>
+
 #include "MemAccess.h"
+#include "Defines.h"
 #include "Logging.h"
+#include "Misc.h"
 #include "SString.h"
+
+#if defined(_WIN32) || defined(_WIN64)
+    #ifndef NOMINMAX
+        #define NOMINMAX
+    #endif
+
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+
+    #include <windows.h>
+#endif
 
 namespace SharedUtil
 {

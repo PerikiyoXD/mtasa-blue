@@ -9,6 +9,7 @@
 
 #include "SString.h"
 
+#include <algorithm>
 #include <cassert>
 
 #include "Defines.h"

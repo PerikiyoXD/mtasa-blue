@@ -7,7 +7,7 @@
  *
  *****************************************************************************/
 
-#include "Time.h"
+#include "SharedTime.h"
 #include "Logging.h"
 
 #ifndef WIN32

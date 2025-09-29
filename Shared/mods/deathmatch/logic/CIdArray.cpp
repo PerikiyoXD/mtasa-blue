@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
-#include "StdInc.h"
 #include "CIdArray.h"
+#include "Misc.h"
+
+using namespace SharedUtil;
 
 #define SHARED_ARRAY_BASE_ID    0x02000000
 

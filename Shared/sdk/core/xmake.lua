@@ -6,10 +6,10 @@ target("Shared SDK Core")
     add_files("**.cpp")
     add_includedirs(".", {public = true})
 
-    if is_plat("windows") then
-        add_cxxflags("/showIncludes", {force = true})
-    end
+    -- if is_plat("windows") then
+    --     add_cxxflags("/showIncludes", {force = true})
+    -- end
 
-    add_deps("tinyxml")
-    add_packages("cryptopp", "zlib")
+    add_deps("tinyxml", "pthread")
+    add_packages("cryptopp", "zlib", "detours")
 target_end()
