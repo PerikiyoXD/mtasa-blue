@@ -11,8 +11,10 @@
 
 #include "StdInc.h"
 #include "CDynamicLibrary.h"
-#include "MTAPlatform.h"
-#include "version.h"
+
+#include "core/File.h"
+#include "core/version.h"
+
 
 #ifdef WIN32
     #include <stdio.h>
@@ -127,7 +129,7 @@ FuncPtr_t CDynamicLibrary::GetProcedureAddress(const char* szProcName)
     if (m_hModule != 0)
     {
         #ifdef WIN32
-        return reinterpret_cast<FuncPtr_t>(static_cast<void*>(GetProcAddress(m_hModule, szProcName)));
+        return reinterpret_cast<FuncPtr_t>(GetProcAddress(m_hModule, szProcName));
         #else
         char* szError = NULL;
         dlerror();
