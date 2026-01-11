@@ -290,3 +290,28 @@ target("lunasvg")
     if not is_plat("windows") or not is_arch("x86") then
         set_enabled(false)
     end
+
+-- detours
+target("detours")
+    set_kind("static")
+    set_languages("cxx")
+
+    add_defines("WIN32_LEAN_AND_MEAN")
+    add_includedirs("detours/4.0.1/src")
+
+    add_files(
+        "detours/4.0.1/src/creatwth.cpp",
+        "detours/4.0.1/src/detours.cpp",
+        "detours/4.0.1/src/image.cpp",
+        "detours/4.0.1/src/modules.cpp",
+        "detours/4.0.1/src/disolx86.cpp",
+        "detours/4.0.1/src/disolx64.cpp",
+        "detours/4.0.1/src/disasm.cpp"
+    )
+
+    add_headerfiles("detours/4.0.1/src/detours.h", "detours/4.0.1/src/detver.h")
+
+    -- Windows x86 only (matching premake)
+    if not is_plat("windows") or not is_arch("x86") then
+        set_enabled(false)
+    end

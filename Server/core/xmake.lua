@@ -12,11 +12,21 @@ target("Server Core")
     set_basename("core")
     set_targetdir("$(projectdir)/Bin/server")
 
+    add_files("*.cpp")
+    add_headerfiles("*.h")
 
-    add_files("core/*.cpp")
-    add_headerfiles("core/*.h")
+    -- Include directories (matching premake)
+    add_includedirs("../../Shared/sdk", "../sdk", "../../vendor/google-breakpad/src", "../../vendor/sparsehash/current/src")
 
-    if not is_plat("windows") then
-        remove_files("core/CExceptionInformation_Impl.cpp")
+    if is_plat("windows") then
+        add_includedirs("../../vendor/sparsehash/current/src/windows")
+        if is_arch("x86") then
+            add_includedirs("../../vendor/detours/4.0.1/src")
+            add_deps("detours", "Shared SDK")
+            add_links("Imagehlp")
+        end
+        remove_files("CExceptionInformation_Impl.cpp")
+    else
+        remove_files("CExceptionInformation_Impl.cpp")
     end
 target_end()
