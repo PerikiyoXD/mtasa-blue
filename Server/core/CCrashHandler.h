@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "CCrashHandlerAPI.h"
+#include "core/SString.h"
 
 #ifdef WIN32
     #include <windows.h>

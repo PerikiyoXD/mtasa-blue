@@ -93,7 +93,7 @@ bool CDynamicLibrary::Load(const char* szFilename)
     #endif
 
     // Check for version mismatch
-    if (!CheckMtaVersion(ExtractFilename(szFilename)))
+    if (!CheckMtaVersion(SharedUtil::ExtractFilename(szFilename)))
     {
         return false;
     }

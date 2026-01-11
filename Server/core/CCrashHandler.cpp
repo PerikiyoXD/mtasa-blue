@@ -9,9 +9,16 @@
  *
  *****************************************************************************/
 
-#include "StdInc.h"
 #include "CCrashHandler.h"
-#include "version.h"
+
+#include "CCrashHandlerAPI.h"
+
+#include "StdInc.h"
+
+#include "core/Defines.h"
+#include "core/File.h"
+#include "core/version.h"
+
 #ifdef WIN32
     #include "CExceptionInformation_Impl.h"
 #else
@@ -60,8 +67,8 @@ void CCrashHandler::Init(const SString& strInServerPath)
 {
     SString strServerPath = strInServerPath;
     if (strServerPath == "")
-        strServerPath = GetSystemCurrentDirectory();
-    ms_strDumpPath = PathJoin(strServerPath, SERVER_DUMP_PATH);
+        strServerPath = SharedUtil::GetSystemCurrentDirectory();
+    ms_strDumpPath = SharedUtil::PathJoin(strServerPath, SERVER_DUMP_PATH);
 
     // Set a global filter
     #ifdef WIN32
@@ -225,7 +232,7 @@ void CCrashHandler::DumpMiniDump(_EXCEPTION_POINTERS* pException, CExceptionInfo
 
             // Create the dump directory
             CreateDirectory(ms_strDumpPath, 0);
-            CreateDirectory(PathJoin(ms_strDumpPath, "private"), 0);
+            CreateDirectory(SharedUtil::PathJoin(ms_strDumpPath, "private"), 0);
 
             SString strModuleName = pExceptionInformation->GetModuleBaseName();
             strModuleName = strModuleName.ReplaceI(".dll", "").Replace(".exe", "").Replace("_", "").Replace(".", "").Replace("-", "");
@@ -240,7 +247,7 @@ void CCrashHandler::DumpMiniDump(_EXCEPTION_POINTERS* pException, CExceptionInfo
                                 pExceptionInformation->GetAddressModuleOffset(), pExceptionInformation->GetCode() & 0xffff, SystemTime.wYear, SystemTime.wMonth,
                                 SystemTime.wDay, SystemTime.wHour, SystemTime.wMinute);
 
-            SString strFinalDumpPathFilename = PathJoin(ms_strDumpPath, "private", strFilename);
+            SString strFinalDumpPathFilename = SharedUtil::PathJoin(ms_strDumpPath, "private", strFilename);
 
             // Create the file
             HANDLE hFile = CreateFile(strFinalDumpPathFilename, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -259,11 +266,11 @@ void CCrashHandler::DumpMiniDump(_EXCEPTION_POINTERS* pException, CExceptionInfo
                 // Close the dumpfile
                 CloseHandle(hFile);
 
-                FileSave(PathJoin(ms_strDumpPath, "server_pending_upload_filename"), strFinalDumpPathFilename);
+                SharedUtil::FileSave(SharedUtil::PathJoin(ms_strDumpPath, "server_pending_upload_filename"), strFinalDumpPathFilename);
             }
 
             // Write a log with the generic exception information
-            FILE* pFile = File::Fopen(PathJoin(ms_strDumpPath, "server_pending_upload.log"), "a+");
+            FILE* pFile = SharedUtil::File::Fopen(SharedUtil::PathJoin(ms_strDumpPath, "server_pending_upload.log"), "a+");
             if (pFile)
             {
                 // Header

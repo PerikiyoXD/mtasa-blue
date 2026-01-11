@@ -13,7 +13,6 @@ set_allowedmodes("debug", "release", "nightly")
 if is_plat("windows") then
     set_allowedplats("windows")
     set_allowedarchs("windows", "x86", "x64", "arm64")
-    -- Default to x86 for Windows (matching premake5)
     set_defaultarchs("windows", "x86")
 elseif is_plat("linux") then
     set_allowedplats("linux")
@@ -84,6 +83,35 @@ if os.getenv("CI") == "true" then
     if is_plat("linux") then
         add_ldflags("-s")
     end
+end
+
+-- Enforcement of architecture-specific builds
+function set_arch_enforcement(target_name)
+    target(target_name)
+        if is_plat("windows") then
+            if is_arch("x86") then
+                add_defines("MTA_PLATFORM_X86", "MTA_PLATFORM_X86_32", "MTA_PLATFORM_WINDOWS")
+            elseif is_arch("x64") then
+                add_defines("MTA_PLATFORM_X86", "MTA_PLATFORM_X86_64", "MTA_PLATFORM_WINDOWS")
+            elseif is_arch("arm64") then
+                add_defines("MTA_PLATFORM_ARM", "MTA_PLATFORM_ARM_64", "MTA_PLATFORM_WINDOWS")
+            end
+        elseif is_plat("linux") then
+            if is_arch("x86") then
+                add_defines("MTA_PLATFORM_X86", "MTA_PLATFORM_X86_32", "MTA_PLATFORM_LINUX")
+            elseif is_arch("x64") then
+                add_defines("MTA_PLATFORM_X86", "MTA_PLATFORM_X86_64", "MTA_PLATFORM_LINUX")
+            elseif is_arch("arm") then
+                add_defines("MTA_PLATFORM_ARM", "MTA_PLATFORM_ARM_32", "MTA_PLATFORM_LINUX")
+            elseif is_arch("arm64") then
+                add_defines("MTA_PLATFORM_ARM", "MTA_PLATFORM_ARM_64", "MTA_PLATFORM_LINUX")
+            end
+        elseif is_plat("macosx") then
+            if is_arch("arm64") then
+                add_defines("MTA_PLATFORM_ARM", "MTA_PLATFORM_ARM_64", "MTA_PLATFORM_MACOSX")
+            end
+        end
+    target_end()
 end
 
 -- Include subprojects

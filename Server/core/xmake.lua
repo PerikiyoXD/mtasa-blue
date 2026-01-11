@@ -12,8 +12,11 @@ target("Server Core")
     set_basename("core")
     set_targetdir("$(projectdir)/Bin/server")
 
-    add_files("*.cpp")
+    -- File sources
+    add_files("**.cpp")
     add_headerfiles("*.h")
+
+    set_arch("x64")
 
     -- Include directories (matching premake)
     add_includedirs("../../Shared/sdk", "../sdk", "../../vendor/google-breakpad/src", "../../vendor/sparsehash/current/src")
@@ -30,3 +33,4 @@ target("Server Core")
         remove_files("CExceptionInformation_Impl.cpp")
     end
 target_end()
+set_arch_enforcement("Server Core")
