@@ -1,50 +1,17 @@
 import os
 import shutil
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Tuple
 import requests
-from colorama import Fore, Style, init
-from datetime import datetime
+from Common import Logger, print_header, print_footer
 
-# Initialize colorama
-init(autoreset=True)
 
-class Logger:
-    @staticmethod
-    def _timestamp():
-        return f"{Fore.CYAN}{datetime.now().strftime('%H:%M:%S')}{Style.RESET_ALL}"
-    
-    @staticmethod
-    def info(msg, emphasis=""):
-        if emphasis:
-            msg = msg.replace(emphasis, f"{Fore.WHITE}{Style.BRIGHT}{emphasis}{Style.RESET_ALL}")
-        print(f"{Logger._timestamp()} {Fore.BLUE}INFO    {Style.RESET_ALL} {msg}")
-    
-    @staticmethod
-    def success(msg, emphasis=""):
-        if emphasis:
-            msg = msg.replace(emphasis, f"{Fore.WHITE}{Style.BRIGHT}{emphasis}{Style.RESET_ALL}")
-        print(f"{Logger._timestamp()} {Fore.GREEN}SUCCESS {Style.RESET_ALL} ✓ {msg}")
-    
-    @staticmethod
-    def error(msg, detail=""):
-        output = f"{Logger._timestamp()} {Fore.RED}ERROR   {Style.RESET_ALL} ✗ {msg}"
-        if detail:
-            output += f"\n         {Fore.YELLOW}↳{Style.RESET_ALL} {detail}"
-        print(output)
-    
-    @staticmethod
-    def download(dest):
-        filename = f"{Fore.MAGENTA}{Path(dest).name}{Style.RESET_ALL}"
-        print(f"{Logger._timestamp()} {Fore.CYAN}DOWNLOAD{Style.RESET_ALL} ⬇ {filename}")
-        
 class MTADataInstaller:
-    BIN_DIR = "Bin"
-    DATA_DIR = "Shared/data/MTA San Andreas"
-    BASE_URL = "https://mirror-cdn.multitheftauto.com/bdata/"
+    BIN_DIR: str = "Bin"
+    DATA_DIR: str = "Shared/data/MTA San Andreas"
+    BASE_URL: str = "https://mirror-cdn.multitheftauto.com/bdata/"
     
-    # Network library paths
-    NET_PATHS = {
+    NET_PATHS: Dict[str, Dict[str, str]] = {
         "windows": {
             "x86": f"{BASE_URL}net.dll",
             "x64": f"{BASE_URL}net_64.dll",
@@ -62,8 +29,8 @@ class MTADataInstaller:
         }
     }
 
-    def __init__(self):
-        self.platform = self._detect_platform()
+    def __init__(self) -> None:
+        self.platform: str = self._detect_platform()
 
     @staticmethod
     def _detect_platform() -> str:
@@ -71,30 +38,34 @@ class MTADataInstaller:
             return "windows"
         elif os.uname().sysname == "Darwin":
             return "macos"
-        else:
-            return "linux"
+        return "linux"
 
     def _download_file(self, url: str, dest: Path) -> bool:
         try:
             dest.parent.mkdir(parents=True, exist_ok=True)
+            Logger.download(dest)
+            
             response = requests.get(url, stream=True)
             response.raise_for_status()
             
             with open(dest, "wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
+            
+            Logger.success(f"Downloaded {dest.name}", dest.name)
             return True
         except Exception as e:
-            print(f"ERROR: Download failed for {url}\n{e}")
+            Logger.error(f"Download failed: {dest.name}", str(e))
             return False
 
     def _copy_file(self, src: Path, dest: Path) -> bool:
         try:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dest)
+            Logger.success(f"Copied {src.name} → {dest.name}", dest.name)
             return True
         except Exception as e:
-            print(f"ERROR: Could not copy {src}\n{e}")
+            Logger.error(f"Copy failed: {src.name}", str(e))
             return False
 
     def _copy_configs(self, pattern: str, skip_existing: bool = True) -> bool:
@@ -103,15 +74,28 @@ class MTADataInstaller:
         
         try:
             dest_dir.mkdir(parents=True, exist_ok=True)
+            count = 0
+            
             for file in src_dir.glob(pattern):
                 dest_file = dest_dir / file.name
                 if skip_existing and dest_file.exists():
                     continue
                 shutil.copy2(file, dest_file)
+                count += 1
+            
+            Logger.success(f"Copied {count} config files ({pattern})")
             return True
         except Exception as e:
-            print(f"ERROR: Couldn't copy config files\n{e}")
+            Logger.error(f"Config copy failed ({pattern})", str(e))
             return False
+
+    def _install_platform_binaries(self, downloads: List[Tuple[str, Path]], 
+                                   copies: List[Tuple[Path, Path]]) -> bool:
+        for url, dest in downloads:
+            if not self._download_file(url, dest):
+                return False
+        
+        return all(self._copy_file(src, dest) for src, dest in copies)
 
     def _install_windows(self) -> bool:
         bin_path = Path(self.BIN_DIR)
@@ -124,10 +108,6 @@ class MTADataInstaller:
             (paths["netc"], bin_path / "MTA/netc.dll")
         ]
         
-        for url, dest in downloads:
-            if not self._download_file(url, dest):
-                return False
-        
         copies = [
             (bin_path / "MTA/netc.dll", bin_path / "MTA/netc_d.dll"),
             (bin_path / "server/net.dll", bin_path / "server/net_d.dll"),
@@ -135,7 +115,7 @@ class MTADataInstaller:
             (bin_path / "server/arm64/net.dll", bin_path / "server/arm64/net_d.dll")
         ]
         
-        return all(self._copy_file(src, dest) for src, dest in copies)
+        return self._install_platform_binaries(downloads, copies)
 
     def _install_linux(self) -> bool:
         bin_path = Path(self.BIN_DIR)
@@ -148,10 +128,6 @@ class MTADataInstaller:
             (paths["arm64"], bin_path / "server/arm64/net.so")
         ]
         
-        for url, dest in downloads:
-            if not self._download_file(url, dest):
-                return False
-        
         copies = [
             (bin_path / "server/net.so", bin_path / "server/net_d.so"),
             (bin_path / "server/x64/net.so", bin_path / "server/x64/net_d.so"),
@@ -159,7 +135,7 @@ class MTADataInstaller:
             (bin_path / "server/arm64/net.so", bin_path / "server/arm64/net_d.so")
         ]
         
-        return all(self._copy_file(src, dest) for src, dest in copies)
+        return self._install_platform_binaries(downloads, copies)
 
     def _install_macos(self) -> bool:
         bin_path = Path(self.BIN_DIR)
@@ -172,42 +148,59 @@ class MTADataInstaller:
         return self._copy_file(dest, bin_path / "server/arm64/net_d.dylib")
 
     def install(self) -> bool:
+        Logger.info(f"Starting MTA installation for {self.platform}", self.platform)
         bin_path = Path(self.BIN_DIR)
         
         # Create Bin directory
+        Logger.info("Creating binary directory")
         bin_path.mkdir(parents=True, exist_ok=True)
         
         # Copy data files (Windows only)
         if self.platform == "windows":
+            Logger.info("Copying data files")
             try:
                 shutil.copytree(self.DATA_DIR, self.BIN_DIR, dirs_exist_ok=True)
+                Logger.success("Data files copied")
             except Exception as e:
-                print(f"ERROR: Couldn't copy data directory\n{e}")
+                Logger.error("Data copy failed", str(e))
                 return False
         
         # Copy configs
+        Logger.info("Installing configuration files")
         if not self._copy_configs("*.conf"):
             return False
         
         # Create config template
         conf_path = bin_path / "server/mods/deathmatch/mtaserver.conf"
         template_path = bin_path / "server/mods/deathmatch/mtaserver.conf.template"
-        if conf_path.exists() and not self._copy_file(conf_path, template_path):
-            return False
+        if conf_path.exists():
+            if not self._copy_file(conf_path, template_path):
+                return False
         
         if not self._copy_configs("*.xml"):
             return False
         
         # Platform-specific installation
+        Logger.info(f"Installing {self.platform} binaries", self.platform)
+        
         if self.platform == "windows":
-            return self._install_windows()
+            result = self._install_windows()
         elif self.platform == "macos":
-            return self._install_macos()
+            result = self._install_macos()
         else:
-            return self._install_linux()
+            result = self._install_linux()
+        
+        if result:
+            Logger.success("MTA installation completed successfully!")
+        else:
+            Logger.error("MTA installation failed")
+        
+        return result
 
 
 if __name__ == "__main__":
+    print_header("MTA San Andreas Data Installer")
     installer = MTADataInstaller()
     success = installer.install()
+    print_footer()
     exit(0 if success else 1)
